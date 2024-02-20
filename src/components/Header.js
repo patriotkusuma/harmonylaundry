@@ -22,9 +22,9 @@ function Header() {
   ];
 
   return (
-    <nav className="shadow-lg h-20 sticky top-0 bg-white z-10">
+    <nav className="shadow-lg  sticky top-0 bg-white z-10">
 
-    <div className="max-w-screen-lg mx-auto flex items-center px-4 xl:px-0 py-4 justify-between ">
+    <div className="max-w-screen-xl mx-auto flex items-center px-4 xl:px-0  justify-between ">
       {/* Logo */}
       <div className="inline-flex items-center">
         <img
@@ -32,7 +32,7 @@ function Header() {
           alt="logo Harmony"
           className="w-[48px]"
         />
-        <h1 className="text-blue-900 font-bold md:text-3xl text-xl">Harmony Laundry</h1>
+        <h1 className="text-blue-900 font-bold md:text-2xl text-xl">Harmony Laundry</h1>
       </div>
 
       {/* Desktop Navigation */}
@@ -69,7 +69,7 @@ function Header() {
         }
       >
         {/* Mobile Logo */}
-        <div className="flex px-4 md:px-0 h-20 items-center justify-between">
+        <div className="flex px-4 md:px-0 items-center justify-between">
 
           <div className="inline-flex items-center">
             <img
@@ -77,7 +77,7 @@ function Header() {
               alt="logo Harmony"
               className="w-[48px]"
               />
-            <h1 className="text-blue-900 font-bold md:text-3xl text-xl">Harmony Laundry</h1>
+            <h3 className="text-blue-900 font-bold md:text-2xl text-lg">Harmony Laundry</h3>
           </div>
           <div className="block md:hidden" onClick={handleNav}>
               {nav ? <AiOutlineClose/> : <AiOutlineMenu/>}

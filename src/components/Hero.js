@@ -3,7 +3,7 @@ import { FaArrowRight } from "react-icons/fa";
 
 function Hero() {
     return (
-        <section className='lg:h-[80vh] place-self-center flex bg-[url("https://harmonylaundry.my.id/assets/img/hero-bg.png")] bg-fixed '>
+        <section className='lg:h-[80vh] place-self-center flex bg-[url("https://harmonylaundry.my.id/assets/img/hero-bg.png")] bg-fixed py-8 md:py-0 '>
             <div className='max-w-screen-lg mx-auto grid grid-cols-1 lg:grid-cols-2 place-self-center gap-10 px-5 xl:px-0 md:px-2'>
 
                 

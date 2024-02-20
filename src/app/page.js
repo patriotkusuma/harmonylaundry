@@ -10,23 +10,23 @@ export const metadata = {
   author: "Harmony Laundry",
   keywords: "Laundry, kiloan, satuan, sepatu, cucikiloan, cucisatuan",
   icons: {
-    icon: '/img/logo.png',
-    shortcut: '/img/logo.png',
-    apple: '/img/logo.png',
+    icon: 'https://harmonylaundrys.com/img/logo.png',
+    shortcut: 'https://harmonylaundrys.com/img/logo.png',
+    apple: 'https://harmonylaundrys.com/img/logo.png',
     other: {
       rel: 'apple-touch-icon-precomposed',
-      url: '/img/logo.png',
+      url: 'https://harmonylaundrys.com/img/logo.png',
     }
     
   },
   openGraph:{
     title: "Harmony Laundry",
     description:"Laundry Kiloan dan Satuan DI Yogyakarta, Antar Jemput Gratis (max 5 km)",
-    url: "https://harmonylaundry.my.id",
+    url: "https://harmonylaundrys.com",
     siteName: "Harmony Laundry",
     type: 'website',
     images: {
-      url: '/img/logo.png',
+      url: 'https://harmonylaundrys.com/img/logo.png',
       alt: 'Harmony Laundry Logo'
     }
   },

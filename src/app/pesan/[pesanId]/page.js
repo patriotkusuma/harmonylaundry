@@ -7,7 +7,7 @@ export async function generateMetadata({params, searchParams}, parent) {
         title: `Detail Pesanan ${pesanId}`,
         description: `Menampilkan detail pesanan dari kode pesanan ${pesanId}`,
         icons: {
-            icon: '/img/logo.png'
+            icon: 'https://harmonylaundrys.com/img/logo.png'
         }
     }
 }
