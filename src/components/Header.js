@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+// import {Link } from 'react-scroll'
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
@@ -15,14 +16,14 @@ function Header() {
   };
 
   const navItems = [
-    { id: 1, text: "Home", url:"/"},
-    { id: 2, text: "About", url: "/" },
-    { id: 3, text: "Harga", url: "/" },
-    { id: 4, text: "Contact", url: '/' },
+    { id: 1, text: "Home", url:"/", section:"hero1"},
+    { id: 2, text: "About", url: "/" ,section:'hero2'},
+    { id: 3, text: "Harga", url: "/" ,section:'hero3'},
+    { id: 4, text: "Contact", url: '/' , section:'hero4'},
   ];
 
   return (
-    <nav className="shadow-lg  sticky top-0 bg-white z-10">
+    <nav className="shadow-lg py-2 md:py-0  sticky top-0 bg-white z-10">
 
     <div className="max-w-screen-xl mx-auto flex items-center px-4 xl:px-0  justify-between ">
       {/* Logo */}
@@ -90,7 +91,8 @@ function Header() {
             key={item.id}
             className='p-4 border-b  hover:text-blue-500 duration-300  cursor-pointer text-blue-900 font-bold'
           >
-            <Link href={item.url}  >
+
+            <Link to={item.section} smooth={true} duration={500} href={item.id == 1 ? item.url : ''}>
 
             {item.text}
             </Link>

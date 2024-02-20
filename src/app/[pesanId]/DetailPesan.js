@@ -18,6 +18,53 @@ function DetailPesan(props) {
     }
   } 
 
+  const statusCuci = (status) => {
+    var color;
+    var text;
+    switch (status) {
+      case 'cuci':
+        color = 'bg-red-700 text-white'
+        text = 'Sedang di Cuci'
+        break;
+      case 'selesai' :
+        color = 'bg-green-500 text-white'
+        text = 'Sudah Selesai'
+        break;
+    
+      case 'diambil':
+        color = 'bg-blue-950 text-white'
+        text = 'Sudah Diambil'
+        break;
+
+      default:
+        break;
+    }
+
+    return (
+      <strong  className={`ml-2 rounded-xl px-2 ${color}`}>
+        {text }
+      </strong>
+    )
+  }
+
+  const checkLunas = (statusPembayaran) => {
+    var style;
+    var text;
+
+    if(statusPembayaran == "Lunas"){
+      style = 'absolute top-2 right-[-60px] rotate-45 px-16 py-2 text-center  text-white bg-green-500'
+      text = 'Lunas'
+    }else{
+      style = 'absolute top-[30px] right-[-60px] rotate-45 px-16 py-2 text-center  text-white bg-red-700'
+      text = 'Belum Lunas'
+    }
+    return (
+      <div className={style}>
+            {text}
+        </div>
+    )
+  }
+
     useEffect(()=> {
       if(pesanan == null){
         getPesanan()
@@ -48,6 +95,10 @@ function DetailPesan(props) {
               <div class="text-gray-700">
                 Telp / Wa :  
                 <strong>{pesanan.customer.telpon}</strong>
+              </div>
+              <div class="text-gray-700">
+                Status :  {statusCuci(pesanan.status)}
+                
               </div>
           </div>
           <hr className="mb-2" />
@@ -87,10 +138,7 @@ function DetailPesan(props) {
     <div class="text-gray-700 mb-2">Terima Kasih !</div>
     <div class="text-gray-700 text-sm">Tetap semangat, semoga sehat selalu. 😊</div>
 
-          <div className={"absolute top-2 right-[-35px] rotate-45 px-10 py-2 text-center  bg-red-700 text-white "}>
-            
-            {pesanan.status_pembayaran}
-          </div>
+          {checkLunas(pesanan.status_pembayaran)}
 
         </div>
       </div>

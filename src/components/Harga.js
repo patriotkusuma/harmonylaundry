@@ -1,13 +1,19 @@
+'use client'
 import React from 'react'
+import { Element } from 'react-scroll'
 
 function Harga() {
   return (
-    <section className='max-w-screen-lg mx-auto py-10 mb-5 flex flex-col gap-y-4 px-4 lg:px-0 my-20 xl:my-0'>
+    <Element name='hero3' className='max-w-screen-xl mx-auto py-10 mb-5 flex flex-col gap-y-4 px-4 lg:px-0 my-20 xl:my-0'>
         <div className='flex flex-col items-center'>
             <h3 className='text-blue-600 uppercase font-bold'>Harga</h3>
             <h4 className='text-blue-900 font-bold md:text-4xl text-2xl'>Harga Laundry Kami</h4>
         </div>
-        <div className='grid md:grid-cols-2 lg:grid-cols-4 grid-cols-1 gap-x-8 gap-y-4 lg:gap-x-4'>
+        <div className='relative'>
+        <div class="absolute top-10 left-20 w-[80%] h-[100%] bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
+
+        <div className='grid md:grid-cols-2 lg:grid-cols-4 grid-cols-1 gap-x-8 gap-y-4 lg:gap-x-4 relative'>
+            
             <div className='shadow-lg rounded-3xl p-12 lg:px-6 text-center hover:shadow-2xl duration-500 ease-in-out bg-white flex flex-col gap-y-8 text-gray-500 md:text-lg md:hover:scale-105 cursor-pointer'>
                 <div >
 
@@ -128,8 +134,11 @@ function Harga() {
            
             
         </div>
+        </div>
 
-    </section>
+        
+
+    </Element>
   )
 }
 

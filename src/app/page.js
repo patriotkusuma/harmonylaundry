@@ -1,4 +1,5 @@
 import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
 import Harga from "@/components/Harga";
 import Hero from "@/components/Hero";
 import WeAre from "@/components/WeAre";
@@ -45,10 +46,10 @@ export const metadata = {
 export default function Home() {
   return (
     <main className="">
-      <Hero/>
-      <WeAre/>
-      <Harga/>
-      <Contact/>
+      <Hero  />
+      <WeAre />
+      <Harga />
+      <Contact />
       
     </main>
   );

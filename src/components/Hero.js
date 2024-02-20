@@ -1,10 +1,12 @@
+'use client'
 import React from 'react'
 import { FaArrowRight } from "react-icons/fa";
+import { Element } from 'react-scroll';
 
 function Hero() {
     return (
-        <section className='lg:h-[80vh] place-self-center flex bg-[url("https://harmonylaundry.my.id/assets/img/hero-bg.png")] bg-fixed py-8 md:py-0 '>
-            <div className='max-w-screen-lg mx-auto grid grid-cols-1 lg:grid-cols-2 place-self-center gap-10 px-5 xl:px-0 md:px-2'>
+        <Element name='hero1' className='xl:h-[90vh] lg:h-[80vh] place-self-center flex bg-[url("https://harmonylaundry.my.id/assets/img/hero-bg.png")] bg-fixed py-8 md:py-0 '>
+            <div className='max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 place-self-center gap-10 px-5 xl:px-0 md:px-2'>
 
                 
                 <div className='place-self-center h-100  '>
@@ -23,7 +25,7 @@ function Hero() {
 
                 
 
-        </section>
+        </Element>
 
     )
 }

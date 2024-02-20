@@ -1,9 +1,11 @@
+'use client'
 import React from 'react'
 import { FaArrowRight } from 'react-icons/fa'
+import { Element } from 'react-scroll'
 
 function WeAre() {
   return (
-    <section className='max-w-screen-lg mx-auto lg:h-[70vh] flex place-items-center px-4 xl:px-0 my-10 lg:my-0'>
+    <Element name='hero2' className='max-w-screen-xl mx-auto lg:h-[70vh] flex place-items-center px-4 xl:px-0 my-10 lg:my-0'>
         <div className='grid grid-cols-1 lg:grid-cols-2   justify-between text-start'>
             <div className='place-self-center bg-blue-50 pr-4 py-10 pl-10'>
                 <h3 className='uppercase text-blue-600 font-bold '>Siapa Kami?</h3>
@@ -21,7 +23,7 @@ function WeAre() {
             </div>
         </div>
         
-    </section>
+    </Element>
   )
 }
 
