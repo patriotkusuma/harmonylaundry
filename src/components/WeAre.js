@@ -19,7 +19,7 @@ function WeAre() {
                     </a>
             </div>
             <div className='place-selft-center'>
-                <img src='/img/laundry-2.jpg'  className='shadow-2xl rounded-2xl'/>
+                <img src='/img/laundry-2.jpg'  className='shadow-2xl rounded-2xl' alt='harmony we are'/>
             </div>
         </div>
         
