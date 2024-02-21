@@ -39,7 +39,10 @@ export const metadata = {
       follow:true
     }
   },
-  category:'Laundry Services'
+  category:'Laundry Services',
+  alternates: {
+    canonical: `https://harmonylaundrys.com/`
+  }
 };
 
 
