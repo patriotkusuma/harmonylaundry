@@ -7,12 +7,17 @@ function DetailPesan(props) {
   const {pesanId} = props
   const [pesanan, setPesanan] = useState(null)
 
+
   const getPesanan =  async() => {
     try {
-      var res = await axios.get(`https://admin.harmonylaundry.my.id/api/pesan/${pesanId}`)
+      var kode = pesanId.slice(0,5);
+      if(kode === "HRMN-"){
 
-      setPesanan(res.data.data.pesanan)
-      return res.data
+        var res = await axios.get(`https://admin.harmonylaundry.my.id/api/pesan/${pesanId}`)
+        
+        setPesanan(res.data.data.pesanan)
+        return res.data
+      }
     }catch(err){
       console.log(err);
     }

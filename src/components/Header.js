@@ -47,10 +47,10 @@ function Header() {
                 : `p-4 hover:text-blue-600  cursor-pointer duration-300 text-blue-900 font-bold `
             }
           >
-            <Link href={item.url}>
+            <a href={item.url}>
 
             {item.text}
-            </Link>
+            </a>
           </li>
         ))}
       </ul>
@@ -92,10 +92,10 @@ function Header() {
             className='p-4 border-b  hover:text-blue-500 duration-300  cursor-pointer text-blue-900 font-bold'
           >
 
-            <Link to={item.section} smooth={true} duration={500} href={item.id == 1 ? item.url : ''}>
+            <a to={item.section} smooth={true} duration={500} href={item.id == 1 ? item.url : ''}>
 
             {item.text}
-            </Link>
+            </a>
           </li>
         ))}
       </ul>

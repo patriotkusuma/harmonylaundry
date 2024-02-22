@@ -42,7 +42,9 @@ export const metadata = {
   category:'Laundry Services',
   alternates: {
     canonical: `https://harmonylaundrys.com/`
-  }
+  },
+  metadataBase: new URL('https://harmonylaundrys.com'),
+
 };
 
 

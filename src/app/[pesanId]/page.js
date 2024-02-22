@@ -1,4 +1,5 @@
 import DetailPesan from "./DetailPesan";
+import fs from 'fs';
 
 export async function generateMetadata({params, searchParams}, parent) {
     const pesanId = params.pesanId
@@ -11,12 +12,21 @@ export async function generateMetadata({params, searchParams}, parent) {
         },
         alternates: {
             canonical: `https://harmonylaundrys.com/${pesanId}`
-        }
+        },
+        metadataBase: new URL('https://harmonylaundrys.com'),
+
     }
+}
+
+async function getBlogData(){
+    const fileDir = fs.readdirSync('public/img/')
+    return fileDir
 }
 
 function Pesanan({params}) {
    const {pesanId} = params
+
+   console.log(getBlogData());
   return (
     <main>
         <DetailPesan pesanId={pesanId} />
