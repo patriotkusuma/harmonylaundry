@@ -10,7 +10,7 @@ function Hero() {
 
                 
                 <div className='place-self-center h-100  '>
-                    <h2 className='text-4xl lg:text-5xl font-bold text-blue-900 mb-10 '>Kami menyediakan solusi untuk kebersihan pakaian anda.</h2>
+                    <h1 className='text-4xl lg:text-5xl font-bold text-blue-900 mb-10 '>Kami menyediakan solusi untuk kebersihan pakaian anda.</h1>
                     <a href='https://wa.me/62895363324517' target='_blank' className='py-3 px-14 inline-flex gap-x-4 place-items-center bg-blue-600 text-white rounded-lg hover:bg-blue-900'>
                         <span>
                         Pesan Sekarang

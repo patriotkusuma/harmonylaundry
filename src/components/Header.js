@@ -20,6 +20,7 @@ function Header() {
     { id: 2, text: "About", url: "/" ,section:'hero2'},
     { id: 3, text: "Harga", url: "/" ,section:'hero3'},
     { id: 4, text: "Contact", url: '/' , section:'hero4'},
+    { id: 5, text: "Blog", url: '/blog' , section:'hero4'},
   ];
 
   return (
@@ -33,7 +34,7 @@ function Header() {
           alt="logo Harmony"
           className="w-[48px]"
         />
-        <h1 className="text-blue-900 font-bold md:text-2xl text-xl">Harmony Laundry</h1>
+        <span className="text-blue-900 font-bold md:text-2xl text-xl">Harmony Laundry</span>
       </div>
 
       {/* Desktop Navigation */}
@@ -78,7 +79,7 @@ function Header() {
               alt="logo Harmony"
               className="w-[48px]"
               />
-            <h3 className="text-blue-900 font-bold md:text-2xl text-lg">Harmony Laundry</h3>
+            <span className="text-blue-900 font-bold md:text-2xl text-lg">Harmony Laundry</span>
           </div>
           <div className="block md:hidden" onClick={handleNav}>
               {nav ? <AiOutlineClose/> : <AiOutlineMenu/>}

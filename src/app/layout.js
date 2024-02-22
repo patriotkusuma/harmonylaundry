@@ -7,9 +7,15 @@ import TopBotton from "@/components/TopBotton";
 const font = Nunito({ subsets: ["latin"] });
 
 
+export const metadata = {
+  icons: {
+    icon: "https://harmonylaundrys.com/img/logo.png",
+  },
+}
+
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" >
       <body className={font.className}>
         <Header/>
         {children}
