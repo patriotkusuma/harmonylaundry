@@ -4,8 +4,8 @@ import matter from 'gray-matter'
 import { remark } from 'remark'
 import html from 'remark-html'
 
-
-const postDirectory = path.join(__dirname, '../posts/')
+const dirRelativeToPublicFolder = 'posts';
+const postDirectory = path.resolve('./public', dirRelativeToPublicFolder);
 
 export async function getPostData() {
 
@@ -31,7 +31,8 @@ export async function getPostData() {
 }
 
 export async function getSinglePost(name){
-    const fileContents = fs.readFileSync(`public/posts/${name}.md`, 'utf-8')
+    const filepath = path.join('/',postDirectory, `${name}.md`)
+    const fileContents = fs.readFileSync(filepath, 'utf-8')
     const matterResult = matter(fileContents)
 
     const processedContent = await remark()
