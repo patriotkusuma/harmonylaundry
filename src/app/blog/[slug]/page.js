@@ -13,7 +13,7 @@ export async function generateMetadata({ params, searchParams }, parent) {
     description: `${post.metaDesc}`,
     
     alternates: {
-      canonical: `http://localhost:3000/blog/${post.name}`,
+      canonical: `/blog/${post.name}`,
     },
     metadataBase: new URL(`https://harmonylaundrys.com/blog/${post.name}`),
     author: "Harmony Laundry ",
@@ -57,7 +57,7 @@ async function page({ params }) {
     <div className="max-w-screen-xl mx-auto place-items-start flex flex-col px-4 xl:px-0 py-6 ">
         <BreadCrumb/>
       <img
-        src={`http://localhost:3000/${post.socialImage}`}
+        src={`/${post.socialImage}`}
         className="w-full aspect-video object-cover shadow-lg rounded-3xl mb-8"
         alt="Thumbnail Blog"
       />
