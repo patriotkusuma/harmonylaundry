@@ -1,5 +1,8 @@
 import { getPostData, getSinglePost } from "@/lib/post";
+import moment from "moment";
+import Link from "next/link";
 import React from "react";
+import { BiTime, BiUser } from "react-icons/bi";
 
 export async function generateMetadata({ params, searchParams }, parent) {
   return {
@@ -49,30 +52,41 @@ export async function generateMetadata({ params, searchParams }, parent) {
 
 async function Blog() {
   const posts = await getPostData();
-  const singlePost = await getSinglePost("webrtc-part-1");
 
   console.log(posts);
   return (
-    <div>
-      {posts.fileContents.map((post) => {
+    <div className="max-w-screen-xl min-h-screen mx-auto place-items-start items-center  flex flex-col gap-y-2 px-4 xl:px-0 py-6">
+      <h1 className="font-bold text-4xl text-center text-blue-900 my-10">Harmony Laundry Blog's</h1>
+
+      <div className="grid md:grid-cols-3 grid-cols-1 gap-5">
+
+      {posts.fileContents.map((post, index) => {
         console.log(post);
         return (
-          <>
-            <h1 className="font-bold">{post.id}</h1>
-            <h1 className="font-bold">{post.title}</h1>
-            {/* <div dangerouslySetInnerHTML={{ __html: post.contentHtml}}/> */}
-          </>
+          <Link href={`/blog/${post.id}`} key={index} className="group hover:shadow-2xl shadow-lg rounded-xl overflow-hidden pb-8 duration-500 ease-in-out">
+            <div className="flex flex-col gap-y-3">
+              <img src={`/${post.socialImage}`} />
+              <h2 className="font-bold px-4 group-hover:text-blue-500 duration-500 ease-in-out">{post.title}</h2>
+              <div className="font-light flex justify-between text-gray-500 px-4">
+                <span className="inline-flex items-center gap-x-2">
+                  <BiUser className="text-lg"/>
+                  {post.author}
+                </span>
+                <span className="inline-flex items-center gap-x-2">
+                  <BiTime className="text-lg"/>
+                  {moment(post.date).format('DD MMMM YYYY')}
+                </span>
+              </div>
+              <p className="px-4 text-gray-500">
+                {post.metaDesc}
+                </p>
+              {/* <div dangerouslySetInnerHTML={{ __html: post.contentHtml}}/> */}
+            </div>
+          </Link>
         );
       })}
-      {/* {posts.map((post) => {
-        return (
-          <>
-          <h1>{singlePost.name}</h1>
-          <h1>{post.title}</h1>
-          <div dangerouslySetInnerHTML={{ __html: singlePost.contentHtml}}/>
-          </>
-        )
-      })} */}
+      </div>
+      
     </div>
   );
 }
