@@ -93,7 +93,7 @@ function Header() {
             className='p-4 border-b  hover:text-blue-500 duration-300  cursor-pointer text-blue-900 font-bold'
           >
 
-            <a to={item.section} smooth={true} duration={500} href={item.id == 1 ? item.url : ''}>
+            <a href={item.url}>
 
             {item.text}
             </a>
