@@ -31,7 +31,7 @@ export async function getPostData() {
 }
 
 export async function getSinglePost(name){
-    const fileContents = fs.readFileSync(`/posts/${name}.md`, 'utf-8')
+    const fileContents = fs.readFileSync(`public/posts/${name}.md`, 'utf-8')
     const matterResult = matter(fileContents)
 
     const processedContent = await remark()
