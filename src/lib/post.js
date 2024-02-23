@@ -9,7 +9,7 @@ const postDirectory = path.join(__dirname, '../posts/')
 
 export async function getPostData() {
 
-    const fullPath = fs.readdirSync('/posts/')
+    const fullPath = fs.readdirSync('public/posts/')
 
     const fileContents = fullPath.map((fileName) => {
         const id = fileName.replace(/\.md$/,'')
