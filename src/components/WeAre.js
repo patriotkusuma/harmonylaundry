@@ -1,13 +1,17 @@
 'use client'
-import React from 'react'
+import Aos from 'aos'
+import React, { useEffect } from 'react'
 import { FaArrowRight } from 'react-icons/fa'
 import { Element } from 'react-scroll'
 
 function WeAre() {
+  useEffect(()=>{
+    Aos.init()
+  })
   return (
     <Element name='hero2' className='max-w-screen-xl mx-auto lg:h-[70vh] flex place-items-center px-4 xl:px-0 my-10 lg:my-0'>
         <div className='grid grid-cols-1 lg:grid-cols-2   justify-between text-start'>
-            <div className='place-self-center bg-blue-50 pr-4 py-10 pl-10'>
+            <div data-aos="fade-right" className='place-self-center bg-blue-50 pr-4 py-10 pl-10'>
                 <h3 className='uppercase text-blue-600 font-bold '>Siapa Kami?</h3>
                 <h4 className='text-blue-900 font-bold text-2xl'>Kami merupakan usaha laundry kiloan yang bertempat di yogyakarta.</h4>
                 <h5 className='text-gray-600 text-[18px] my-4'>Kami menyediakan solusi yang mudah untuk membersihkan pakaian yang rekan-rekan gunakan.</h5>
@@ -18,7 +22,7 @@ function WeAre() {
                         <FaArrowRight/>
                     </a>
             </div>
-            <div className='place-selft-center'>
+            <div data-aos="fade-left" className='place-selft-center'>
                 <img src='/img/laundry-2.jpg'  className='shadow-2xl rounded-2xl' alt='harmony we are'/>
             </div>
         </div>

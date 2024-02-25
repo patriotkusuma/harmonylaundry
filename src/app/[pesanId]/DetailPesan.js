@@ -1,27 +1,12 @@
-'use client'
-import axios from "axios";
+import getDetailPesan from "@/lib/pesanan";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-function DetailPesan(props) {
-  const {pesanId} = props
-  const [pesanan, setPesanan] = useState(null)
+async function DetailPesan(props) {
+  const pesanId = props.pesanId
+  const pesanan = await getDetailPesan(pesanId);
 
-
-  const getPesanan =  async() => {
-    try {
-      var kode = pesanId.slice(0,5);
-      if(kode === "HRMN-"){
-
-        var res = await axios.get(`https://admin.harmonylaundry.my.id/api/pesan/${pesanId}`)
-        
-        setPesanan(res.data.data.pesanan)
-        return res.data
-      }
-    }catch(err){
-      console.log(err);
-    }
-  } 
+  console.log(pesanan)
 
   const statusCuci = (status) => {
     var color;
@@ -70,11 +55,6 @@ function DetailPesan(props) {
     )
   }
 
-    useEffect(()=> {
-      if(pesanan == null){
-        getPesanan()
-      }
-    },[])
 
   return (
     <section className='max-w-screen-lg mx-auto lg:h-[80vh] flex items-start justify-center px-4 xl:px-0 my-2 lg:my-0'>
@@ -89,27 +69,27 @@ function DetailPesan(props) {
           </h1>
           <hr className="mb-2"/>
           <div className="text-gray-700">
-            <div> Nomor : <strong> {pesanan.kode_pesan}</strong></div>
-            <div>Masuk : <strong>{moment(pesanan.tanggal_pesan).format('H:m , DD MMMM YYYY')}</strong></div>
-            <div>Selesai : <strong>{moment(pesanan.tanggal_selesai).format('H:m , DD MMMM YYYY')}</strong></div>
+            <div> Nomor : <strong> {pesanan.data.pesanan.kode_pesan}</strong></div>
+            <div>Masuk : <strong>{moment(pesanan.data.pesanan.tanggal_pesan).format('H:m , DD MMMM YYYY')}</strong></div>
+            <div>Selesai : <strong>{moment(pesanan.data.pesanan.tanggal_selesai).format('H:m , DD MMMM YYYY')}</strong></div>
           </div>
           <div class="mb-2">
               <div class="text-gray-700">Nama :  
-                <strong>{pesanan.customer.nama}</strong>
+                <strong>{pesanan.data.pesanan.customer.nama}</strong>
               </div>
               <div class="text-gray-700">
                 Telp / Wa :  
-                <strong>{pesanan.customer.telpon}</strong>
+                <strong>{pesanan.data.pesanan.customer.telpon}</strong>
               </div>
               <div class="text-gray-700">
-                Status :  {statusCuci(pesanan.status)}
+                Status :  {statusCuci(pesanan.data.pesanan.status)}
                 
               </div>
           </div>
           <hr className="mb-2" />
           <table class="w-full mb-8">
               <tbody>
-                  {pesanan.detail_pesanan.map((detail,index) => {
+                  {pesanan.data.pesanan.detail_pesanan.map((detail,index) => {
                     return(
                       <>
                       <tr>
@@ -136,14 +116,14 @@ function DetailPesan(props) {
                   </tr>
                   <tr>
                       <td colSpan={3} class="text-left font-bold text-gray-700">Total</td>
-                      <td class="text-right font-bold text-gray-700">{(new Intl.NumberFormat('id-id', {style:'currency', currency: 'IDR'}).format(pesanan.total_harga))}</td>
+                      <td class="text-right font-bold text-gray-700">{(new Intl.NumberFormat('id-id', {style:'currency', currency: 'IDR'}).format(pesanan.data.pesanan.total_harga))}</td>
                   </tr>
               </tfoot>
           </table>
     <div class="text-gray-700 mb-2">Terima Kasih !</div>
     <div class="text-gray-700 text-sm">Tetap semangat, semoga sehat selalu. 😊</div>
 
-          {checkLunas(pesanan.status_pembayaran)}
+          {checkLunas(pesanan.data.pesanan.status_pembayaran)}
 
         </div>
       </div>

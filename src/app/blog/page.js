@@ -1,3 +1,4 @@
+import { getBlogData } from "@/lib/newPost";
 import { getPostData, getSinglePost } from "@/lib/post";
 import moment from "moment";
 import Link from "next/link";
@@ -51,43 +52,51 @@ export async function generateMetadata({ params, searchParams }, parent) {
 }
 
 async function Blog() {
-  const posts = await getPostData();
+  // const posts = await getPostData();
+  const blogs = await getBlogData();
 
-  console.log(posts);
+
+
   return (
-    <div className="max-w-screen-xl min-h-screen mx-auto place-items-start items-center  flex flex-col gap-y-2 px-4 xl:px-0 py-6">
+    <div className="bg-[url('/img/hero-bg.png')] bg-cover max-w-screen bg-no-repeat">
+
+    <div className=" max-w-screen-xl min-h-screen mx-auto place-items-start items-center  flex flex-col gap-y-2 px-4 xl:px-0 py-16">
       <h1 className="font-bold text-4xl text-center text-blue-900 my-10">Harmony Laundry Blog's</h1>
 
       <div className="grid md:grid-cols-3 grid-cols-1 gap-5">
 
-      {posts.fileContents.map((post, index) => {
-        console.log(post);
-        return (
-          <Link href={`/blog/${post.id}`} key={index} className="group hover:shadow-2xl shadow-lg rounded-xl overflow-hidden pb-8 duration-500 ease-in-out">
+     
+      {
+        blogs.data.blog.map((bg,index) => {
+          return (
+            <Link href={`/blog/${bg.slug}`} key={index} className="group hover:shadow-2xl shadow-lg rounded-xl overflow-hidden pb-8 duration-500 ease-in-out">
             <div className="flex flex-col gap-y-3">
-              <img src={`/${post.socialImage}`} />
-              <h2 className="font-bold px-4 group-hover:text-blue-500 duration-500 ease-in-out">{post.title}</h2>
+              <img src={`${bg.thumbnail}`} />
+              <h2 className="font-bold px-4 group-hover:text-blue-500 duration-500 ease-in-out">{bg.title}</h2>
               <div className="font-light flex justify-between text-gray-500 px-4">
                 <span className="inline-flex items-center gap-x-2">
                   <BiUser className="text-lg"/>
-                  {post.author}
+                  {bg.pegawai.name}
                 </span>
                 <span className="inline-flex items-center gap-x-2">
                   <BiTime className="text-lg"/>
-                  {moment(post.date).format('DD MMMM YYYY')}
+                  {moment(bg.created_at).format('DD MMMM YYYY')}
                 </span>
               </div>
               <p className="px-4 text-gray-500">
-                {post.metaDesc}
+                {bg.metaDesc}
                 </p>
               {/* <div dangerouslySetInnerHTML={{ __html: post.contentHtml}}/> */}
             </div>
           </Link>
-        );
-      })}
+          )
+        })
+      }
       </div>
       
     </div>
+    </div>
+
   );
 }
 

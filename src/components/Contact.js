@@ -29,7 +29,7 @@ function Contact() {
           </div>
           <div className="p-8 bg-blue-100 shadow-lg hover:shadow-2xl duration-500 ease-in-out cursor-pointer rounded-xl flex flex-col gap-y-4">
             <FiPhone className="text-blue-600 text-[48px]" />
-            <h3 className="text-blue-900 font-bold text-[24px]">Alamat</h3>
+            <h3 className="text-blue-900 font-bold text-[24px]">Kontak</h3>
             <a
               href="http://wa.me/62895363324517"
               target="_blank"

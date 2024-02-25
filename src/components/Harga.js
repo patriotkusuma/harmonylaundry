@@ -28,7 +28,7 @@ function Harga() {
                 </div>
                 <div className='flex flex-col gap-y-2'>
 
-                    <img src='/img/pricing-free.png' alt='Regular'/>
+                    <img src='/img/paket/kiloan.png' alt='Regular'/>
                     <h5 className='text-[16px]'>Setrika Rp 4.000</h5>
                     <h5 className='text-[16px]'>Cuci Lipat Rp 4.000</h5>
                     <h5 className='text-[16px]'>Cuci Setrika Rp 5.000</h5>
@@ -57,7 +57,7 @@ function Harga() {
                 </div>
                 <div className='flex flex-col gap-y-2'>
 
-                <img src='/img/pricing-starter.png' alt='Regular'/>
+                <img src='/img/paket/dry-clean.png' alt='Regular'/>
                     <h5 className='text-[16px]'>Setrika Rp 5.000</h5>
                     <h5 className='text-[16px]'>Cuci Lipat Rp 5.000</h5>
                     <h5 className='text-[16px]'>Cuci Setrika Rp 7.000</h5>
@@ -86,7 +86,7 @@ function Harga() {
                 </div>
                 <div className='flex flex-col gap-y-2'>
 
-                <img src='/img/pricing-business.png' alt='Regular'/>
+                <img src='/img/paket/satuan.png' alt='Regular'/>
                 <h5 className='text-[16px]'>Selimut</h5>
                 <h5 className='text-[16px]'>Bed Cover</h5>
                 <h5 className='text-[16px]'>Boneka</h5>
@@ -116,7 +116,7 @@ function Harga() {
                 </div>
                 <div className='flex flex-col gap-y-2'>
 
-                <img src='/img/pricing-ultimate.png' alt='Regular'/>
+                <img src='/img/paket/sepatu.png' alt='Regular'/>
                 <h5 className='text-[16px]'>Fast Clean Rp 20.000</h5>
                 <h5 className='text-[16px]'>Deep Clean Rp 30.000 - Rp 40.000</h5>
                 <h5 className='text-[16px]'>Pengerjaan 1 - 3 Hari</h5>

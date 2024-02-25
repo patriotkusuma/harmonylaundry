@@ -6,9 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export": "next export"
   },
   "dependencies": {
+    "aos": "^2.3.4",
     "axios": "^1.6.7",
     "gray-matter": "^4.0.3",
     "markdown-it": "^14.0.0",

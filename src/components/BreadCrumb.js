@@ -6,7 +6,6 @@ import React from "react";
 function BreadCrumb() {
   const path = usePathname();
   const pathName = path.split("/").filter((path) => path);
-  console.log(pathName);
   return (
     <nav class="flex" aria-label="Breadcrumb" className="mb-8 ">
       <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
@@ -29,7 +28,6 @@ function BreadCrumb() {
         </li>
         {pathName.map((link, index) => {
           let href = `/${pathName.slice(0, index + 1).join("/")}`;
-          console.log(href);
           return (
             <li key={index}>
               <div class="flex items-center">

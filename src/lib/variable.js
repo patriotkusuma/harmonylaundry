@@ -1,0 +1,1 @@
+export const baseUrl = "https://silaundry.my.id"

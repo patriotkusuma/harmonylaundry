@@ -1,3 +1,4 @@
+import BayarQris from "./BayarQris";
 import DetailPesan from "./DetailPesan";
 import fs from 'fs';
 
@@ -18,18 +19,14 @@ export async function generateMetadata({params, searchParams}, parent) {
     }
 }
 
-async function getBlogData(){
-    const fileDir = fs.readdirSync('public/img/')
-    return fileDir
-}
 
 function Pesanan({params}) {
    const {pesanId} = params
 
-   console.log(getBlogData());
   return (
-    <main>
+    <main className="mt-16 flex gap-6 flex-col md:flex-row">
         <DetailPesan pesanId={pesanId} />
+        <BayarQris />
     </main>
   )
 }
