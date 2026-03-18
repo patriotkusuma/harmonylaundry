@@ -6,6 +6,12 @@
 
 Website resmi **Harmony Laundry**, penyedia layanan laundry kiloan dan satuan di Daerah Istimewa Yogyakarta dengan fitur unggulan antar-jemput gratis (maksimal 5 km).
 
+## 📸 Screenshots
+
+| Landing Page | Booking Page (Glassmorphism) |
+| :---: | :---: |
+| ![Landing Page](public/screenshots/landing.png) | ![Booking Page](public/screenshots/pesan.png) |
+
 ## 🚀 Fitur Utama
 
 - **Modern & Premium UI**: Desain menggunakan konsep *Dark Glassmorphism* yang elegan dan responsif.
