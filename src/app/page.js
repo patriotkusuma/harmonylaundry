@@ -3,7 +3,10 @@ import Footer from "@/components/Footer";
 import Harga from "@/components/Harga";
 import Hero from "@/components/Hero";
 import WeAre from "@/components/WeAre";
-import Image from "next/image";
+import Features from "@/components/Features";
+import HowItWorks from "@/components/HowItWorks";
+import Stats from "@/components/Stats";
+import Testimonials from "@/components/Testimonials";
 
 export const metadata = {
   title: "Harmony Laundry | Laundry Kiloan & Satuan DI Yogyakarta Antar Jemput",
@@ -50,12 +53,30 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <main className="">
-      <Hero  />
+    <main>
+      {/* Hero - visual pertama yang dilihat pengunjung */}
+      <Hero />
+
+      {/* Statistik singkat - bangun kepercayaan */}
+      <Stats />
+
+      {/* Siapa kami - narasi brand */}
       <WeAre />
+
+      {/* Keunggulan layanan */}
+      <Features />
+
+      {/* Cara kerja / proses */}
+      <HowItWorks />
+
+      {/* Daftar harga */}
       <Harga />
+
+      {/* Testimoni pelanggan */}
+      <Testimonials />
+
+      {/* Kontak / CTA akhir */}
       <Contact />
-      
     </main>
   );
 }

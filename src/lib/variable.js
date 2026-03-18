@@ -1,1 +1,1 @@
-export const baseUrl = "https://silaundry.my.id"
+export const baseUrl = "https://admin.harmonylaundry.my.id"

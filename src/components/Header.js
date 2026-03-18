@@ -36,11 +36,13 @@ function Header() {
     { id: 4, text: "Contact", url: 'https://wa.me/62895363324517' , section:'hero4', target:"_blank"},
   ];
 
+  const isScrolled = scrollY > 0 || path !== '/';
+
   return (
     <nav className={
-      scrollY > 0 
-      ? " py-2 md:py-0  fixed w-full top-0 z-10 shadow-xl bg-white/80 backdrop-blur-xl duration-500 ease-in-out"
-      : " py-2 md:py-0  fixed w-full top-0 bg-transparent z-10 duration-500 ease-in-out"
+      isScrolled 
+      ? " py-3 md:py-0 fixed w-full top-0 z-[100] shadow-xl bg-white md:bg-white/90 backdrop-blur-xl duration-500 ease-in-out"
+      : " py-3 md:py-0 fixed w-full top-0 bg-transparent z-[100] duration-500 ease-in-out"
       }>
 
     <div className="max-w-screen-xl mx-auto flex items-center px-4 xl:px-0  justify-between ">
@@ -51,33 +53,39 @@ function Header() {
           alt="logo Harmony"
           className="w-[48px]"
         />
-        <span className="text-blue-900 font-bold md:text-2xl text-xl">Harmony Laundry</span>
+        <span className={`font-bold md:text-2xl text-xl transition-colors duration-500 ${isScrolled ? 'text-blue-900' : 'text-white'}`}>Harmony Laundry</span>
       </div>
 
       {/* Desktop Navigation */}
-      <ul className="hidden md:flex">
+      <ul className="hidden md:flex" key={"desktop"}>
         {navItems.map((item, index) => {
-          let href = pathName.length > 0 ? `/${pathName[0]}` : '/';
+          let currentPath = path === '/' ? '/' : `/${pathName[0]}`;
           
           return (
-          <a href={item.url} target={item.target}>
-          <li
-            key={item.id}
-            className={
-              href === item.url
-                ? `p-4 hover:text-blue-500 cursor-pointer duration-500 text-blue-600 font-bold border-b-2 border-blue-600 `
-                : `p-4 hover:text-blue-600  cursor-pointer duration-500 text-blue-900 font-bold hover:border-blue-600 hover:border-b-2 `
-            }
-          >
-
-            {item.text}
-          </li>
-            </a>
+          <a href={item.url} target={item.target} key={item.id}>
+            <li
+              className={
+                currentPath === item.url
+                  ? `p-4 cursor-pointer duration-500 font-bold border-b-2 ${
+                      isScrolled
+                        ? 'text-blue-600 border-blue-600 hover:text-blue-500'
+                        : 'text-white border-white/70 hover:text-white/80'
+                    }`
+                  : `p-4 cursor-pointer duration-500 font-bold hover:border-b-2 ${
+                      isScrolled
+                        ? 'text-blue-900 hover:text-blue-600 hover:border-blue-600'
+                        : 'text-white/90 hover:text-white hover:border-white/50'
+                    }`
+              }
+            >
+              {item.text}
+            </li>
+          </a>
         )})}
       </ul>
 
       {/* Mobile Navigation */}
-      <div className="block md:hidden" onClick={handleNav} >
+      <div className={`block md:hidden cursor-pointer transition-colors duration-500 ${isScrolled ? 'text-blue-900' : 'text-white'}`} onClick={handleNav}>
             {nav ? <AiOutlineClose/> : <AiOutlineMenu/> }
       </div>
 
@@ -89,13 +97,14 @@ function Header() {
             ? 'fixed md:hidden right-0 top-0 w-[100%] h-full  bg-white text-blue-900 ease-in-out duration-500'
             : 'ease-in-out w-[100%] duration-500 fixed top-0 bottom-0 right-[-100%]'
         }
+        key={"mobile"}
       >
         {/* Mobile Logo */}
         <div className="flex px-4 md:px-0 items-center justify-between">
 
           <div className="inline-flex items-center">
             <img
-              src="https://harmonylaundry.my.id/assets/img/logo.png"
+              src="/img/logo-harmony.png"
               alt="logo Harmony"
               className="w-[48px]"
               />
@@ -107,13 +116,14 @@ function Header() {
         </div>
 
         {/* Mobile Navigation Items */}
-        {navItems.map(item => (
-          <a href={item.url} target={item.target}>
+        {navItems.map(item => {
+          let currentPath = path === '/' ? '/' : `/${pathName[0]}`;
+          return (
+          <a href={item.url} target={item.target} key={item.id}>
           <li
-            key={item.id}
             className={
               
-              pathName[0] === item.url 
+              currentPath === item.url 
               ? 'p-4   border-b  hover:text-blue-500 duration-300  cursor-pointer text-white font-bold bg-blue-600'
               : 'p-4 border-b  hover:text-blue-500 duration-300  cursor-pointer text-blue-900 font-bold'
             }
@@ -123,7 +133,7 @@ function Header() {
             {item.text}
           </li>
             </a>
-        ))}
+        )})}
       </ul>
     </div>
     </nav>

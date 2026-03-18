@@ -3,11 +3,12 @@ const { createServer } = require('http')
 const { parse } = require('url')
 const next = require('next')
 
-const dev = process.env.NODE_ENV !== 'production'
+// const dev = process.env.NODE_ENV !== 'production'
+const dev = false
 const hostname = 'harmonylaundrys.com'
-const port = process.env.port || 8080
+const port = process.env.port || 3000
 // when using middleware `hostname` and `port` must be provided below
-const app = next({ dev, hostname, port })
+const app = next({ dev, port })
 const handle = app.getRequestHandler()
 
 app.prepare().then(() => {

@@ -1,3 +1,57 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9; /* slate-100 */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3b82f6; /* blue-500 */
+  border-radius: 10px;
+  border: 2px solid #f1f5f9; /* Matches track background for a padded look */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2563eb; /* blue-600 */
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #3b82f6 #f1f5f9;
+}
+
+/* Custom Animations for PESAN PAGE */
+@layer utilities {
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+}
+
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}

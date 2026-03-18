@@ -3,11 +3,13 @@ import "./globals.css";
 import Header from "@/components/Header"
 import Footer from "@/components/Footer";
 import TopBotton from "@/components/TopBotton";
+import ChatwootWidget from "@/components/ChatwootWidget";
 
 const font = Nunito({ subsets: ["latin"] });
 
 
 export const metadata = {
+  metadataBase: new URL('https://harmonylaundrys.com'),
   icons: {
     icon: "https://harmonylaundrys.com/img/logo.png",
   },
