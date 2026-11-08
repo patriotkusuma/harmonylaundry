@@ -2,36 +2,178 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom Scrollbar Styles */
+@layer base {
+  :root {
+    --cream: #f3f8fe;
+    --ink: #0e2138;
+    --brand: #0e5aa4;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6.5rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-cream-100 text-ink-800 antialiased;
+    font-feature-settings: "ss01" on, "cv11" on;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display text-ink-900;
+  }
+
+  ::selection {
+    background: #bee2fa;
+    color: #071626;
+  }
+
+  :focus-visible {
+    outline: 2px solid #1683c9;
+    outline-offset: 3px;
+  }
+}
+
+/* ── Design system ─────────────────────────────────────────── */
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-ink-900/10 bg-white/70 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-ink-600 backdrop-blur;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-lg {
+    @apply px-6 py-3.5 text-base;
+  }
+
+  .btn-dark {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold transition-all duration-200 bg-ink-900 text-cream-50 shadow-card hover:-translate-y-0.5 hover:bg-ink-700 active:translate-y-0;
+  }
+
+  .btn-brand {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold transition-all duration-200 bg-brand-700 text-white shadow-card hover:-translate-y-0.5 hover:bg-brand-800 active:translate-y-0;
+  }
+
+  .btn-wa {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold transition-all duration-200 bg-emerald-600 text-white shadow-card hover:-translate-y-0.5 hover:bg-emerald-700 active:translate-y-0;
+  }
+
+  .btn-light {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold transition-all duration-200 border border-ink-900/15 bg-white text-ink-800 hover:-translate-y-0.5 hover:border-ink-900/30 hover:bg-cream-50 active:translate-y-0;
+  }
+
+  .card {
+    @apply rounded-[1.75rem] border border-ink-900/10 bg-white;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:-translate-y-1.5 hover:border-ink-900/20 hover:shadow-card;
+  }
+
+  .field {
+    @apply w-full rounded-2xl border border-ink-900/10 bg-cream-50 px-4 py-3 text-sm text-ink-800 outline-none transition-all placeholder:text-ink-400/70 focus:border-brand-600 focus:bg-white focus:ring-4 focus:ring-brand-500/15;
+  }
+
+  .field-label {
+    @apply mb-1.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-ink-600;
+  }
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────── */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 11px;
+  height: 11px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #f1f5f9; /* slate-100 */
+  background: #e7f1fa;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: #3b82f6; /* blue-500 */
-  border-radius: 10px;
-  border: 2px solid #f1f5f9; /* Matches track background for a padded look */
+  background: #29a0e6;
+  border-radius: 999px;
+  border: 3px solid #e7f1fa;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: #2563eb; /* blue-600 */
+  background: #0e5aa4;
 }
-
-/* For Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #3b82f6 #f1f5f9;
+  scrollbar-color: #29a0e6 #e7f1fa;
 }
 
-/* Custom Animations for PESAN PAGE */
+/* ── Texture & utilities ───────────────────────────────────── */
 @layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Dot grid backdrop */
+  .bg-dotgrid {
+    background-image: radial-gradient(rgba(16, 28, 46, 0.13) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+
+  /* Bubble pattern — nuansa air & busa laundry */
+  .bg-bubbles {
+    background-image: radial-gradient(circle at 12% 22%, rgba(41, 160, 230, 0.16) 0 6px, transparent 7px),
+      radial-gradient(circle at 32% 70%, rgba(41, 160, 230, 0.12) 0 10px, transparent 11px),
+      radial-gradient(circle at 78% 18%, rgba(41, 160, 230, 0.14) 0 8px, transparent 9px),
+      radial-gradient(circle at 92% 62%, rgba(41, 160, 230, 0.1) 0 14px, transparent 15px),
+      radial-gradient(circle at 55% 40%, rgba(41, 160, 230, 0.08) 0 4px, transparent 5px);
+    background-size: 380px 380px;
+  }
+
+  /* Fine line grid backdrop */
+  .bg-linegrid {
+    background-image: linear-gradient(rgba(16, 28, 46, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(16, 28, 46, 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .mask-fade-b {
+    -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+  }
+
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+
+  /* Marker-pen highlight for a single phrase */
+  .marker-highlight {
+    background-image: linear-gradient(transparent 58%, #bfe3ff 58%, #bfe3ff 92%, transparent 92%);
+    background-repeat: no-repeat;
+  }
+
+  .pause-on-hover:hover > * {
+    animation-play-state: paused;
+  }
+
   .animate-blob {
-    animation: blob 7s infinite;
+    animation: blob 14s ease-in-out infinite;
   }
   .animation-delay-2000 {
     animation-delay: 2s;
@@ -41,17 +183,46 @@
   }
 }
 
+/* ── Keyframes ─────────────────────────────────────────────── */
 @keyframes blob {
   0% {
     transform: translate(0px, 0px) scale(1);
   }
   33% {
-    transform: translate(30px, -50px) scale(1.1);
+    transform: translate(24px, -36px) scale(1.08);
   }
   66% {
-    transform: translate(-20px, 20px) scale(0.9);
+    transform: translate(-16px, 18px) scale(0.94);
   }
   100% {
     transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes shine {
+  100% {
+    transform: translateX(220%) skewX(-12deg);
+  }
+}
+
+/* Subtle paper grain over the whole page */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

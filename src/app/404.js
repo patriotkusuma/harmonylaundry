@@ -1,30 +1,45 @@
 import Link from "next/link";
 import { FaArrowLeft, FaReceipt } from "react-icons/fa";
+import { LuArrowUpRight, LuHome } from "react-icons/lu";
 
 export default function Custom404() {
   return (
-    <main className="min-h-[80vh] flex flex-col items-center justify-center w-full text-center px-4 bg-gray-50">
-        <div className="bg-white p-10 md:p-14 rounded-[3rem] shadow-xl border border-gray-100 max-w-lg w-full relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-40 h-40 bg-blue-100 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2"></div>
-            
-            <div className="relative z-10 flex flex-col items-center">
-                <div className="w-24 h-24 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-4xl mb-6 shadow-sm">
-                    <FaReceipt />
-                </div>
-                
-                <h2 className="text-3xl font-extrabold text-gray-900 mb-3 tracking-tight">Halaman Tidak Ditemukan</h2>
-                <p className="text-gray-500 text-base leading-relaxed mb-8">
-                    Maaf, halaman yang Anda tuju sepertinya sedang dipindahkan atau tidak ada di dalam sistem kami.
-                </p>
-                
-                <div className="flex w-full justify-center">
-                    <Link href="/" className="inline-flex items-center justify-center gap-2 py-3.5 px-8 bg-blue-600 text-white font-semibold rounded-2xl hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/30 hover:scale-105 transition-all duration-300">
-                        <FaArrowLeft />
-                        Kembali ke Beranda
-                    </Link>
-                </div>
-            </div>
+    <main className="relative flex min-h-[85vh] w-full flex-col items-center justify-center overflow-hidden bg-cream-100 px-4 py-24 text-center">
+      <div className="pointer-events-none absolute inset-0 bg-dotgrid opacity-40 mask-fade-b" />
+      <div className="pointer-events-none absolute -left-20 top-1/3 h-72 w-72 rounded-full bg-brand-100/60 blur-3xl" />
+      <div className="pointer-events-none absolute -right-16 bottom-10 h-72 w-72 rounded-full bg-citrus-200/40 blur-3xl" />
+
+      <div className="relative z-10 w-full max-w-lg rounded-[2rem] border border-ink-900/10 bg-white/85 p-8 shadow-card backdrop-blur sm:p-12">
+        <div className="mx-auto grid h-20 w-20 place-items-center rounded-2xl bg-coral-300/40 text-3xl text-coral-600">
+          <FaReceipt />
         </div>
+
+        <div className="mt-5 font-display text-6xl font-extrabold leading-none tracking-tighter text-ink-900">
+          404
+        </div>
+        <h2 className="mt-3 font-display text-2xl font-extrabold tracking-tight text-ink-900">
+          Halaman tidak ditemukan
+        </h2>
+        <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-ink-500">
+          Maaf, halaman yang kamu tuju sedang dipindahkan atau tidak ada di sistem kami.
+        </p>
+
+        <div className="mt-7 flex flex-col justify-center gap-2.5 sm:flex-row">
+          <Link href="/" className="btn-dark w-full sm:w-auto">
+            <LuHome className="text-base" />
+            Kembali ke beranda
+          </Link>
+          <Link href="/blog" className="btn-light w-full sm:w-auto">
+            Baca blog
+            <LuArrowUpRight className="text-base" />
+          </Link>
+        </div>
+
+        <p className="mt-6 inline-flex items-center gap-1.5 text-[11px] font-medium text-ink-400">
+          <FaArrowLeft className="text-[10px]" />
+          Butuh bantuan? Chat CS kami via WhatsApp.
+        </p>
+      </div>
     </main>
   );
 }

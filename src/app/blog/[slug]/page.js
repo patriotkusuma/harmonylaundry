@@ -4,6 +4,8 @@ import { getBlogPost } from "@/lib/newPost";
 import moment from "moment";
 import React from "react";
 import { BiTime, BiUser } from "react-icons/bi";
+import { FaWhatsapp } from "react-icons/fa";
+import { LuArrowRight } from "react-icons/lu";
 
 export async function generateMetadata({ params }) {
   const response = await getBlogPost(params.slug);
@@ -38,9 +40,7 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://harmonylaundrys.com/blog/${blog.slug}`,
     },
-    metadataBase: new URL(
-      `https://harmonylaundrys.com`
-    ),
+    metadataBase: new URL(`https://harmonylaundrys.com`),
     openGraph: {
       title: `${blog.title} | Harmony Laundry`,
       description: blog.meta_desc || blog.title,
@@ -83,74 +83,100 @@ async function Page({ params }) {
   };
 
   const htmlContent =
-  typeof blog.content === "string"
-    ? blog.content
-    : blog.content?.html || "";
-
+    typeof blog.content === "string" ? blog.content : blog.content?.html || "";
 
   return (
-    <article className="mt-16 max-w-screen-xl mx-auto px-4 xl:px-0 py-8">
+    <div className="relative min-h-screen overflow-hidden bg-cream-100 pb-24 pt-28 sm:pt-32">
+      <div className="pointer-events-none absolute inset-0 bg-dotgrid opacity-30 mask-fade-b" />
+      <div className="pointer-events-none absolute -right-24 top-32 h-80 w-80 rounded-full bg-brand-100/60 blur-3xl" />
 
-      {/* BREADCRUMB */}
-      <BreadCrumb />
+      <article className="container-page relative z-10 max-w-4xl">
+        <BreadCrumb />
 
-      {/* HERO IMAGE */}
-      <div className="relative w-full aspect-video overflow-hidden rounded-3xl shadow-xl mt-6">
-        <img
-          src={getImageUrl(blog.thumbnail)}
-          alt={blog.title}
-          className="w-full h-full object-cover"
+        {/* Header */}
+        <div className="mt-6">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <span className="rounded-full bg-brand-100 px-3 py-1 text-[11px] font-bold capitalize text-brand-700">
+              {blog.kategori?.nama || "Artikel"}
+            </span>
+            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-ink-400">
+              <BiTime className="text-base" />
+              {moment(blog.created_at).format("DD MMMM YYYY")}
+            </span>
+          </div>
+
+          <h1 className="mt-4 font-display text-3xl font-extrabold leading-[1.08] tracking-tight text-ink-900 text-balance sm:text-4xl lg:text-5xl">
+            {blog.title}
+          </h1>
+
+          <div className="mt-5 flex items-center gap-3 border-b border-ink-900/10 pb-6">
+            <span className="grid h-10 w-10 place-items-center rounded-full bg-white text-ink-400 shadow-sm">
+              <BiUser className="text-lg" />
+            </span>
+            <div>
+              <p className="text-sm font-extrabold text-ink-900">
+                {blog?.pegawai?.name || "Harmony Laundry"}
+              </p>
+              <p className="text-[11px] font-medium text-ink-400">Penulis</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Hero image */}
+        <div className="relative mt-8 aspect-video w-full overflow-hidden rounded-[2rem] border-[6px] border-white bg-white shadow-lift">
+          <img
+            src={getImageUrl(blog.thumbnail)}
+            alt={blog.title}
+            className="h-full w-full object-cover"
+          />
+        </div>
+
+        {/* Content */}
+        <div
+          className="
+            prose prose-lg mt-10 max-w-none
+            prose-headings:font-display prose-headings:font-extrabold prose-headings:tracking-tight prose-headings:text-ink-900
+            prose-p:leading-relaxed prose-p:text-ink-600
+            prose-a:font-semibold prose-a:text-brand-700 prose-a:no-underline hover:prose-a:underline
+            prose-strong:text-ink-900
+            prose-li:text-ink-600
+            prose-img:rounded-2xl
+            prose-blockquote:border-l-brand-500 prose-blockquote:bg-white/60 prose-blockquote:py-1 prose-blockquote:not-italic prose-blockquote:text-ink-600
+          "
+          dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-      </div>
 
-      {/* TITLE */}
-      <h1 className="mt-10 text-3xl md:text-4xl font-extrabold text-gray-800 leading-tight">
-        {blog.title}
-      </h1>
+        {/* CTA */}
+        <div className="relative mt-16 overflow-hidden rounded-[2rem] bg-ink-900 p-8 text-center sm:p-12">
+          <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-brand-500/25 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-20 left-1/4 h-56 w-56 rounded-full bg-citrus-400/10 blur-3xl" />
 
-      {/* META */}
-      <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-500">
-        <span className="inline-flex items-center gap-2">
-          <BiUser className="text-lg" />
-          {blog?.pegawai?.name}
-        </span>
-        <span className="inline-flex items-center gap-2">
-          <BiTime className="text-lg" />
-          {moment(blog.created_at).format("DD MMMM YYYY")}
-        </span>
-      </div>
-
-      {/* CONTENT */}
-      <div
-        className="
-          prose prose-lg max-w-none mt-10
-          prose-headings:text-gray-800
-          prose-p:text-gray-600
-          prose-a:text-blue-600
-          prose-img:rounded-xl
-        "
-        dangerouslySetInnerHTML={{ __html: htmlContent }}
-      />
-
-
-      {/* CTA */}
-      <div className="mt-16 bg-blue-50 border border-blue-100 rounded-3xl p-8 text-center">
-        <h3 className="text-2xl font-bold text-blue-900">
-          Capek urusan cucian?
-        </h3>
-        <p className="mt-3 text-gray-600 max-w-xl mx-auto">
-          Serahkan urusan mencuci ke Harmony Laundry. Bersih, wangi, dan tepat waktu.
-        </p>
-        <a
-          href="/"
-          className="inline-block mt-6 bg-blue-600 text-white px-8 py-3 rounded-full font-medium hover:bg-blue-700 transition"
-        >
-          Lihat Layanan Kami
-        </a>
-      </div>
-
-    </article>
+          <div className="relative">
+            <h3 className="font-display text-2xl font-extrabold text-cream-50 sm:text-3xl">
+              Capek urusan cucian?
+            </h3>
+            <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-ink-300">
+              Serahkan pada Harmony Laundry. Dijemput gratis, kembali bersih, wangi, dan rapi.
+            </p>
+            <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <a
+                href="https://wa.me/62895363324517"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-wa w-full sm:w-auto"
+              >
+                <FaWhatsapp className="text-xl" />
+                Pesan antar jemput
+              </a>
+              <a href="/" className="btn-light w-full border-white/20 bg-white/10 text-cream-50 hover:bg-white/20 sm:w-auto">
+                Lihat layanan
+                <LuArrowRight className="text-base" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
   );
 }
 

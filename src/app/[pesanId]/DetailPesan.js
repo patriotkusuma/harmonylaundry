@@ -3,20 +3,17 @@ import moment from "moment";
 import "moment/locale/id";
 import Custom404 from "./404";
 import {
+  FaBan,
+  FaBoxOpen,
   FaCheckCircle,
   FaClipboardList,
+  FaHandHoldingHeart,
   FaSoap,
   FaTshirt,
-  FaBoxOpen,
-  FaHandHoldingHeart,
-  FaBan,
-  FaChevronDown, 
-  FaChevronUp,
 } from "react-icons/fa";
+import { LuClock, LuShieldCheck, LuSparkles } from "react-icons/lu";
 import Step from "@/components/Step";
 import getOrderLog from "@/lib/getOrderLog";
-
-
 
 const normalizeProses = (p = "") => p.toLowerCase().trim();
 
@@ -27,7 +24,6 @@ const groupLogsByProses = (logs = []) => {
     if (!groups[key]) groups[key] = [];
     groups[key].push(l);
   }
-  // sort tiap group by started_at asc
   Object.keys(groups).forEach((k) => {
     groups[k].sort((a, b) => new Date(a.started_at) - new Date(b.started_at));
   });
@@ -47,7 +43,6 @@ const buildStepsFromOrderAndLogs = (order, logs = []) => {
   const cuciLogs = grouped["cuci"] || [];
   const setrikaLogs = grouped["setrika"] || [];
 
-  // timeline utama
   const steps = [
     {
       key: "masuk",
@@ -67,7 +62,7 @@ const buildStepsFromOrderAndLogs = (order, logs = []) => {
       time: getStepTimeFromLogs(cuciLogs, "first"),
       logs: cuciLogs,
       icon: <FaSoap />,
-      color: "bg-blue-50 border-blue-200 text-blue-700",
+      color: "bg-brand-50 border-brand-200 text-brand-700",
     },
     {
       key: "setrika",
@@ -97,26 +92,21 @@ const buildStepsFromOrderAndLogs = (order, logs = []) => {
       time: order?.tanggal_ambil,
       logs: grouped["diambil"] || [],
       icon: <FaHandHoldingHeart />,
-      color: "bg-green-50 border-green-200 text-green-700",
+      color: "bg-brand-50 border-brand-200 text-brand-700",
     },
   ];
 
-  // Tentukan active step:
-  // prioritas: status order
   let activeIdx = 1;
   if (status === "cuci") activeIdx = 1;
   else if (status === "setrika") activeIdx = 2;
   else if (status === "selesai") activeIdx = 3;
   else if (status === "diambil") activeIdx = 4;
 
-  // batal
   const canceled = status === "batal";
 
   return { steps, activeIdx, canceled };
 };
 
-
-/** pembulatan total ke ribuan (opsional, mengikuti logika lama kamu) */
 const totalHargaRound = (value) => {
   if (value == null) return 0;
 
@@ -139,102 +129,18 @@ const formatIDR = (val) =>
 const statusBadge = (status) => {
   const s = (status || "").toLowerCase();
 
-  if (s === "cuci") return "bg-blue-100 text-blue-700 border-blue-200";
+  if (s === "cuci") return "bg-sky-100 text-sky-700 border-sky-200";
   if (s === "setrika") return "bg-indigo-100 text-indigo-700 border-indigo-200";
   if (s === "selesai") return "bg-emerald-100 text-emerald-700 border-emerald-200";
-  if (s === "diambil") return "bg-green-100 text-green-700 border-green-200";
+  if (s === "diambil") return "bg-brand-100 text-brand-700 border-brand-200";
   if (s === "batal") return "bg-rose-100 text-rose-700 border-rose-200";
-  return "bg-gray-100 text-gray-700 border-gray-200";
+  return "bg-cream-100 text-ink-600 border-ink-900/10";
 };
 
 const bayarBadge = (statusPembayaran) => {
   if (statusPembayaran === "Lunas") return "bg-emerald-100 text-emerald-700 border-emerald-200";
-  return "bg-amber-100 text-amber-700 border-amber-200";
+  return "bg-citrus-100 text-citrus-500 border-citrus-300";
 };
-
-
-const buildWorkSteps = (data) => {
-  const status = (data?.status || "").toLowerCase();
-
-  // batal
-  if (status === "batal") {
-    return {
-      canceled: true,
-      steps: [
-        {
-          key: "masuk",
-          title: "Masuk",
-          desc: "Pesanan diterima.",
-          time: data?.tanggal_pesan,
-          icon: <FaClipboardList />,
-        },
-        {
-          key: "batal",
-          title: "Dibatalkan",
-          desc: "Pesanan dibatalkan.",
-          time: data?.updated_at,
-          icon: <FaBan />,
-        },
-      ],
-      activeIdx: 1,
-    };
-  }
-
-  const steps = [
-    {
-      key: "masuk",
-      title: "Masuk",
-      desc: "Pesanan diterima dan masuk antrian.",
-      time: data?.tanggal_pesan,
-      icon: <FaClipboardList />,
-    },
-    {
-      key: "cuci",
-      title: "Cuci",
-      desc: "Laundry sedang dicuci dan diproses.",
-      time: null,
-      icon: <FaSoap />,
-    },
-    {
-      key: "setrika",
-      title: "Setrika",
-      desc: "Laundry sedang disetrika / finishing.",
-      time: data?.setrika_at,
-      icon: <FaTshirt />,
-    },
-    {
-      key: "selesai",
-      title: "Selesai",
-      desc: "Laundry selesai dan siap diambil/dikirim.",
-      time: data?.selesai_at,
-      icon: <FaBoxOpen />,
-    },
-    {
-      key: "diambil",
-      title: "Diambil",
-      desc: "Laundry sudah diambil customer.",
-      time: data?.tanggal_ambil,
-      icon: <FaHandHoldingHeart />,
-    },
-  ];
-
-  let activeIdx = 1; // default cuci
-  if (status === "cuci") activeIdx = 1;
-  else if (status === "setrika") activeIdx = 2;
-  else if (status === "selesai") activeIdx = 3;
-  else if (status === "diambil") activeIdx = 4;
-
-  return { canceled: false, steps, activeIdx };
-};
-
-const prosesMeta = (proses) => {
-  const p = (proses || "").toLowerCase();
-  if (p.includes("cuci")) return { title: "Cuci", icon: <FaSoap />, color: "text-blue-700 bg-blue-50 border-blue-200" };
-  if (p.includes("setrika")) return { title: "Setrika", icon: <FaTshirt />, color: "text-indigo-700 bg-indigo-50 border-indigo-200" };
-  if (p.includes("packing") || p.includes("siap")) return { title: "Packing", icon: <FaBoxOpen />, color: "text-emerald-700 bg-emerald-50 border-emerald-200" };
-  return { title: proses || "-", icon: <FaCheckCircle />, color: "text-gray-600 bg-gray-50 border-gray-200" };
-};
-
 
 export async function getStatusPembayaran(pesanId) {
   const res = await getDetailPesan(pesanId);
@@ -250,73 +156,65 @@ async function DetailPesan(props) {
     return <Custom404 statusCode={404} />;
   }
 
-  /** Struktur JSON kamu: { data: {...}, status: 200 } */
   const data = res?.data ?? {};
   const customer = data?.customer ?? {};
 
   const details = data?.detail_pesanans ?? [];
-  const needPayAmount = data?.paid - data?.total_harga;
-  const total =  Number(Math.abs(needPayAmount)) ;
+  const needPayAmount =
+    Number(data?.paid ?? 0) - Number(data?.total_harga ?? 0);
+  const total = Math.abs(needPayAmount);
 
-  // const { steps, activeIdx, canceled } = buildWorkSteps(data);
   const logRes = await getOrderLog(pesanId);
   const logs = logRes?.data ?? [];
   const { steps, activeIdx, canceled } = buildStepsFromOrderAndLogs(data, logs);
 
-  
-
-
   return (
-    <section className="w-full">
-      <div className="rounded-2xl border bg-white shadow-sm overflow-hidden">
+    <section className="w-full lg:flex-1">
+      <div className="overflow-hidden rounded-[1.75rem] border border-ink-900/10 bg-white shadow-card">
         {/* Header */}
-        {/* Header */}
-        <div className="p-4 sm:p-5 md:p-6 border-b bg-gradient-to-r from-blue-50 to-white">
+        <div className="border-b border-ink-900/10 bg-gradient-to-r from-brand-50 via-cream-50 to-white p-5 sm:p-6">
           <div className="flex flex-col gap-4">
-            {/* ROW 1: Brand */}
             <div className="flex items-start gap-3">
               <img
                 src="/img/logo.png"
                 alt="Harmony Laundry"
-                className="h-11 w-11 rounded-xl shrink-0 bg-white border"
+                className="h-11 w-11 shrink-0 rounded-xl border border-ink-900/10 bg-white"
               />
 
               <div className="min-w-0">
-                <div className="text-lg font-bold text-gray-900 leading-tight">
+                <div className="font-display text-lg font-extrabold leading-tight text-ink-900">
                   Harmony Laundry
                 </div>
-                <div className="mt-1 text-sm text-gray-600 leading-snug">
+                <div className="mt-1 text-xs leading-snug text-ink-500">
                   Jln. Candi Gebang, Karangasem, Condongcatur
                 </div>
-                <div className="text-sm text-gray-600">
-                  Telp / WA: <span className="font-semibold">0895363324517</span>
+                <div className="text-xs text-ink-500">
+                  Telp / WA: <span className="font-semibold text-ink-800">0895363324517</span>
                 </div>
               </div>
             </div>
 
-            {/* ROW 2: Order meta */}
-            <div className="rounded-2xl border bg-white/70 p-4">
+            <div className="rounded-2xl border border-ink-900/10 bg-white/80 p-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <div className="text-[11px] uppercase tracking-wide text-gray-500">
-                    Kode Pesanan
+                  <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-ink-400">
+                    Kode pesanan
                   </div>
-                  <div className="mt-1 font-mono text-sm font-semibold text-gray-900 break-all">
+                  <div className="mt-1 break-all font-mono text-sm font-bold text-ink-900">
                     {data?.kode_pesan || pesanId}
                   </div>
                 </div>
 
-                {/* badges */}
-                <div className="flex flex-col items-end gap-2 shrink-0">
+                <div className="flex shrink-0 flex-col items-end gap-2">
                   <div
-                    className={`inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold ${statusBadge(
+                    className={`inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-bold capitalize ${statusBadge(
                       data?.status
                     )}`}
                   >
                     {data?.status || "-"}
                   </div>
                   <div
-                    className={`inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold ${bayarBadge(
+                    className={`inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-bold ${bayarBadge(
                       data?.status_pembayaran
                     )}`}
                   >
@@ -328,35 +226,34 @@ async function DetailPesan(props) {
           </div>
         </div>
 
-
         {/* Body */}
-        <div className="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-5 p-5 sm:p-6 lg:grid-cols-3">
           {/* Left */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Customer info */}
-            <div className="rounded-2xl border p-5">
-              <div className="text-sm font-semibold text-gray-900">Detail Pemesan</div>
+          <div className="space-y-5 lg:col-span-2">
+            {/* Customer */}
+            <div className="rounded-2xl border border-ink-900/10 p-5">
+              <div className="text-sm font-extrabold text-ink-900">Detail pemesan</div>
 
-              <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-700">
+              <div className="mt-4 grid grid-cols-1 gap-4 text-sm text-ink-700 md:grid-cols-2">
                 <div>
-                  <div className="text-xs text-gray-500">Nama</div>
-                  <div className="font-semibold">{customer?.nama || "-"}</div>
+                  <div className="text-[11px] font-semibold uppercase tracking-wide text-ink-400">Nama</div>
+                  <div className="mt-0.5 font-bold text-ink-900">{customer?.nama || "-"}</div>
                 </div>
                 <div>
-                  <div className="text-xs text-gray-500">Telp / WA</div>
-                  <div className="font-semibold">{customer?.telpon || "-"}</div>
+                  <div className="text-[11px] font-semibold uppercase tracking-wide text-ink-400">Telp / WA</div>
+                  <div className="mt-0.5 font-bold text-ink-900">{customer?.telpon || "-"}</div>
                 </div>
                 <div>
-                  <div className="text-xs text-gray-500">Tanggal Pesan</div>
-                  <div className="font-semibold">
+                  <div className="text-[11px] font-semibold uppercase tracking-wide text-ink-400">Tanggal pesan</div>
+                  <div className="mt-0.5 font-semibold text-ink-800">
                     {data?.tanggal_pesan
                       ? moment(data.tanggal_pesan).locale("id").format("dddd HH:mm, DD MMMM YYYY")
                       : "-"}
                   </div>
                 </div>
                 <div>
-                  <div className="text-xs text-gray-500">Estimasi Selesai</div>
-                  <div className="font-semibold">
+                  <div className="text-[11px] font-semibold uppercase tracking-wide text-ink-400">Estimasi selesai</div>
+                  <div className="mt-0.5 font-semibold text-ink-800">
                     {data?.tanggal_selesai
                       ? moment(data.tanggal_selesai).locale("id").format("dddd HH:mm, DD MMMM YYYY")
                       : "-"}
@@ -366,27 +263,27 @@ async function DetailPesan(props) {
             </div>
 
             {/* Items */}
-            <div className="rounded-2xl border overflow-hidden">
-              <div className="px-5 py-4 border-b">
-                <div className="text-sm font-semibold text-gray-900">Rincian Item</div>
-                <div className="text-sm text-gray-500">Detail layanan yang kamu ambil.</div>
+            <div className="overflow-hidden rounded-2xl border border-ink-900/10">
+              <div className="border-b border-ink-900/10 px-5 py-4">
+                <div className="text-sm font-extrabold text-ink-900">Rincian item</div>
+                <div className="text-xs text-ink-500">Detail layanan yang kamu ambil.</div>
               </div>
 
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
-                  <thead className="bg-gray-50 text-gray-600">
+                  <thead className="bg-cream-50 text-[11px] uppercase tracking-wide text-ink-500">
                     <tr>
-                      <th className="text-left px-5 py-3 font-semibold">Layanan</th>
-                      <th className="text-right px-5 py-3 font-semibold">Qty</th>
-                      <th className="text-right px-5 py-3 font-semibold">Harga</th>
-                      <th className="text-right px-5 py-3 font-semibold">Subtotal</th>
+                      <th className="px-5 py-3 text-left font-bold">Layanan</th>
+                      <th className="px-5 py-3 text-right font-bold">Qty</th>
+                      <th className="px-5 py-3 text-right font-bold">Harga</th>
+                      <th className="px-5 py-3 text-right font-bold">Subtotal</th>
                     </tr>
                   </thead>
 
                   <tbody>
                     {(details ?? []).length === 0 ? (
                       <tr>
-                        <td colSpan={4} className="px-5 py-6 text-center text-sm text-gray-500">
+                        <td colSpan={4} className="px-5 py-6 text-center text-sm text-ink-500">
                           Belum ada detail layanan.
                         </td>
                       </tr>
@@ -398,16 +295,16 @@ async function DetailPesan(props) {
                         const subtotal = totalHargaRound(item?.total_harga);
 
                         return (
-                          <tr key={idx} className="border-t">
+                          <tr key={idx} className="border-t border-ink-900/10">
                             <td className="px-5 py-3">
-                              <div className="font-semibold text-gray-900">{layanan}</div>
-                              <div className="text-xs text-gray-500">
+                              <div className="font-bold text-ink-900">{layanan}</div>
+                              <div className="text-[11px] text-ink-500">
                                 {item?.jenis_cuci?.keterangan || ""}
                               </div>
                             </td>
-                            <td className="px-5 py-3 text-right">{qty}</td>
-                            <td className="px-5 py-3 text-right">{formatIDR(harga)}</td>
-                            <td className="px-5 py-3 text-right font-semibold text-gray-900">
+                            <td className="px-5 py-3 text-right text-ink-700">{qty}</td>
+                            <td className="px-5 py-3 text-right text-ink-700">{formatIDR(harga)}</td>
+                            <td className="px-5 py-3 text-right font-bold text-ink-900">
                               {formatIDR(subtotal)}
                             </td>
                           </tr>
@@ -416,12 +313,12 @@ async function DetailPesan(props) {
                     )}
                   </tbody>
 
-                  <tfoot className="bg-gray-50 border-t">
+                  <tfoot className="border-t border-ink-900/10 bg-cream-50">
                     <tr>
-                      <td colSpan={3} className="px-5 py-4 text-right font-semibold text-gray-700">
+                      <td colSpan={3} className="px-5 py-4 text-right font-bold text-ink-600">
                         Total
                       </td>
-                      <td className="px-5 py-4 text-right font-bold text-gray-900">
+                      <td className="px-5 py-4 text-right font-display text-base font-extrabold text-ink-900">
                         {formatIDR(total)}
                       </td>
                     </tr>
@@ -430,17 +327,15 @@ async function DetailPesan(props) {
               </div>
             </div>
 
-            {/* Catatan */}
-            
-            {/* Detail Pengerjaan (Timeline) */}
-            <div className="rounded-2xl border p-5 bg-white">
+            {/* Timeline */}
+            <div className="rounded-2xl border border-ink-900/10 bg-white p-5">
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <div className="text-sm font-semibold text-gray-900">Detail Pengerjaan</div>
-                  <div className="text-sm text-gray-500">Klik tahap untuk melihat keterangannya.</div>
+                  <div className="text-sm font-extrabold text-ink-900">Detail pengerjaan</div>
+                  <div className="text-xs text-ink-500">Klik tahap untuk melihat keterangannya.</div>
                 </div>
                 <div
-                  className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${statusBadge(
+                  className={`inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-bold capitalize ${statusBadge(
                     data?.status
                   )}`}
                 >
@@ -460,57 +355,85 @@ async function DetailPesan(props) {
                 ))}
               </div>
 
-              <div className="mt-3 rounded-2xl bg-gray-50 p-4 text-xs text-gray-600">
-                <div className="font-semibold text-gray-900 mb-1">Info</div>
+              <div className="mt-4 rounded-2xl border border-ink-900/10 bg-cream-50 p-4 text-xs text-ink-600">
+                <div className="mb-1 flex items-center gap-1.5 font-bold text-ink-900">
+                  <LuSparkles className="text-brand-700" /> Info
+                </div>
                 Estimasi selesai dapat berubah jika antrean sedang ramai. Jika ada perubahan,
                 admin akan menghubungi via WhatsApp.
               </div>
             </div>
 
-{data?.keterangan && (
-              <div className="rounded-2xl border p-5">
-                <div className="text-sm font-semibold text-gray-900">Catatan</div>
-                <div className="mt-2 text-sm text-gray-700">{data.keterangan}</div>
+            {data?.keterangan && (
+              <div className="rounded-2xl border border-ink-900/10 p-5">
+                <div className="text-sm font-extrabold text-ink-900">Catatan</div>
+                <div className="mt-2 text-sm text-ink-700">{data.keterangan}</div>
               </div>
             )}
           </div>
 
           {/* Right */}
-          <div className="space-y-6">
-            {/* Ringkasan */}
-            <div className="rounded-2xl border p-5 bg-white">
-              <div className="text-sm font-semibold text-gray-900">Ringkasan</div>
-              <div className="mt-3 space-y-2 text-sm text-gray-700">
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-gray-500">Total</span>
-                  <span className="font-semibold text-gray-900">{formatIDR(total)}</span>
+          <div className="space-y-5">
+            <div className="relative overflow-hidden rounded-2xl bg-ink-900 p-5 text-white">
+              <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-brand-500/25 blur-2xl" />
+              <div className="relative">
+                <div className="text-[10px] font-bold uppercase tracking-[0.16em] text-ink-300">
+                  Ringkasan
                 </div>
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-gray-500">Status</span>
-                  <span className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${statusBadge(data?.status)}`}>
-                    {data?.status || "-"}
+                <div className="mt-3 flex items-baseline gap-1.5">
+                  <span className="text-xs font-bold text-ink-300">Rp</span>
+                  <span className="font-display text-3xl font-extrabold tracking-tight text-cream-50">
+                    {total.toLocaleString("id-ID")}
                   </span>
                 </div>
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-gray-500">Pembayaran</span>
-                  <span className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${bayarBadge(data?.status_pembayaran)}`}>
-                    {data?.status_pembayaran || "-"}
-                  </span>
+
+                <div className="mt-4 space-y-2.5 text-xs">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-ink-300">Status</span>
+                    <span
+                      className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[11px] font-bold capitalize ${statusBadge(
+                        data?.status
+                      )}`}
+                    >
+                      {data?.status || "-"}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-ink-300">Pembayaran</span>
+                    <span
+                      className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[11px] font-bold ${bayarBadge(
+                        data?.status_pembayaran
+                      )}`}
+                    >
+                      {data?.status_pembayaran || "-"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mt-4 flex items-start gap-2 rounded-xl border border-white/10 bg-white/5 p-3 text-[11px] leading-relaxed text-ink-300">
+                  <LuShieldCheck className="mt-0.5 shrink-0 text-sm text-brand-300" />
+                  Cucian diproses higienis 1 mesin 1 pelanggan.
                 </div>
               </div>
             </div>
 
-            {/* Thanks */}
-            <div className="rounded-2xl border p-5">
-              <div className="text-sm font-semibold text-gray-900">Terima kasih!</div>
-              <div className="text-sm text-gray-600 mt-1">Berani Kotor Itu Baik 😊</div>
+            <div className="rounded-2xl border border-ink-900/10 bg-citrus-100 p-5">
+              <div className="flex items-center gap-2 text-sm font-extrabold text-ink-900">
+                <FaCheckCircle className="text-emerald-600" />
+                Terima kasih!
+              </div>
+              <div className="mt-1 text-xs leading-relaxed text-ink-600">
+                Berani kotor itu baik 😊 Kami tunggu cucian berikutnya, ya.
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 px-1 text-[11px] text-ink-400">
+              <LuClock className="text-sm" />
+              Halaman ini diperbarui otomatis saat kamu refresh.
             </div>
           </div>
         </div>
-
-        
       </div>
-      
     </section>
   );
 }

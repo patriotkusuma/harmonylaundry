@@ -1,175 +1,181 @@
 'use client'
-import React, { useState, useEffect } from 'react'
-import { FaWhatsapp, FaTshirt, FaMapMarkerAlt, FaClock, FaUser } from 'react-icons/fa'
+import React, { useEffect, useState } from 'react'
+import { FaWhatsapp } from 'react-icons/fa'
+import { LuCheck, LuClock, LuMapPin, LuShirt, LuSparkles, LuTruck, LuUser } from 'react-icons/lu'
+
+const paketOptions = [
+  { value: 'Regular 2 Hari', label: 'Regular', hint: '2 hari · hemat' },
+  { value: 'Express 1 Hari', label: 'Express', hint: '24 jam · populer' },
+  { value: 'Kilat 6 Jam', label: 'Super kilat', hint: '6 jam selesai' },
+  { value: 'Kilat 4 Jam', label: 'Flash', hint: '4 jam selesai' },
+]
 
 function FormPesan() {
-    const [isValid, setIsValid] = useState(false);
+  const [isValid, setIsValid] = useState(false)
 
-    const [formData, setFormData] = useState({
-        'nama': '',
-        'paket': '',
-        'layanan': '',
-        'alamat': '',
+  const [formData, setFormData] = useState({
+    nama: '',
+    paket: 'Regular 2 Hari',
+    layanan: 'Cuci Setrika',
+    alamat: '',
+  })
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
     })
+  }
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        })
-    }
+  useEffect(() => {
+    const checkValid =
+      formData.nama.trim() !== '' &&
+      formData.paket !== '' &&
+      formData.layanan !== '' &&
+      formData.alamat.trim() !== ''
+    setIsValid(checkValid)
+  }, [formData])
 
-    // Check if form is valid whenever formData changes
-    useEffect(() => {
-        const checkValid = formData.nama.trim() !== '' && 
-                           formData.paket !== '' && 
-                           formData.layanan !== '' && 
-                           formData.alamat.trim() !== '';
-        setIsValid(checkValid);
-    }, [formData]);
+  const submit = (e) => {
+    e.preventDefault()
+    if (!isValid) return
 
-    const submit = () => {
-        if (!isValid) return;
+    const number = '62895363324517'
 
-        let number = "62895363324517";
+    let message = 'Halo Harmony Laundry! Mau booking pickup cucian antar jemput dong kak:' + '%0a%0a'
+    message += `• Nama Lengkap : *${formData.nama.trim()}*` + '%0a'
+    message += `• Paket Kecepatan : *${formData.paket}*` + '%0a'
+    message += `• Jenis Layanan : *${formData.layanan}*` + '%0a'
+    message += `• Alamat Pickup : *${formData.alamat.trim()}*` + '%0a%0a'
+    message += 'Mohon info waktu penjemputan driver ke lokasi saya. Terima kasih banyak!'
 
-        var message = encodeURI("Hallo kak! Bisa Tolong Pickup ? ") + '%0a%0a'
-        message += encodeURI(`Atas Nama : *${formData.nama}* `) + '%0a'
-        message += encodeURI(`Paket : *${formData.paket}* `) + '%0a'
-        message += encodeURI(`Layanan : *${formData.layanan}*`) + '%0a'
-        message += encodeURI(`Alamat : *${formData.alamat}*`) + '%0a%0a'
-        message += encodeURI(`Terima Kasih`)
-
-        let url = `https://wa.me/${number}?text=${message}&app_absent=0`
-        window.open(url, '_blank')
-    }
+    const url = `https://wa.me/${number}?text=${encodeURI(message).replace(/#/g, '%23')}`
+    window.open(url, '_blank')
+  }
 
   return (
-    <div className="w-full max-w-[480px] mx-auto z-10 px-2 sm:px-0"> 
-        <div className="bg-slate-900/40 backdrop-blur-2xl shadow-2xl shadow-black/30 rounded-[2.5rem] overflow-hidden border border-white/10">
-            
-            {/* Header section */}
-            <div className="p-8 text-center border-b border-white/10 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 rounded-full blur-2xl -translate-y-1/2 translate-x-1/3"></div>
-                <div className="relative z-10">
-                    <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-2 tracking-wide">
-                        Mulai Pesanan 🧺
-                    </h1>
-                    <p className="text-blue-200/60 text-sm sm:text-base font-light">
-                        Lengkapi data di bawah, kurir kami segera meluncur ke lokasimu!
-                    </p>
-                </div>
-            </div>
+    <div className="w-full max-w-lg">
+      <div className="relative overflow-hidden rounded-[2rem] border border-ink-900/10 bg-white p-5 shadow-card sm:p-8">
+        <div className="pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-full bg-brand-100/70 blur-2xl" />
 
-            <div className="p-6 sm:p-8 flex flex-col gap-y-6">
-                {/* Nama Lengkap */}
-                <div className="flex flex-col gap-y-2">
-                    <label className="text-blue-50 font-semibold text-sm flex items-center gap-2">
-                        <FaUser className="text-blue-400" />
-                        Nama Lengkap <span className="text-red-400">*</span>
-                    </label>
-                    <input
-                        className="bg-white/5 border border-white/10 text-white text-sm rounded-2xl focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 block w-full p-4 transition-all duration-300 placeholder:text-white/20 outline-none hover:bg-white/10"
-                        type="text"
-                        placeholder="Contoh: Budi Santoso"
-                        name="nama"
-                        value={formData.nama}
-                        onChange={handleChange}
-                    />
-                </div>  
-
-                {/* Pilih Paket */}
-                <div className="flex flex-col gap-y-2">
-                    <label className="text-blue-50 font-semibold text-sm flex items-center gap-2">
-                        <FaClock className="text-blue-400" />
-                        Pilih Paket Kecepatan <span className="text-red-400">*</span>
-                    </label>
-                    <div className="relative">
-                        <select
-                            className="bg-white/5 border border-white/10 text-white text-sm rounded-2xl focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 block w-full p-4 appearance-none cursor-pointer transition-all duration-300 outline-none hover:bg-white/10 [&>option]:bg-slate-800"
-                            name="paket"
-                            value={formData.paket}
-                            onChange={handleChange}
-                        >
-                            <option value="" disabled>-- Pilih Paket --</option>
-                            <option value="Regular 2 Hari">Regular 2 Hari</option>
-                            <option value="Express 1 Hari">Express 1 Hari</option>
-                            <option value="Kilat 6 Jam">Kilat 6 Jam</option>
-                            <option value="Kilat 4 Jam">Kilat 4 Jam</option>
-                        </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-5 text-white/40">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </div>
-                    </div>
-                </div>  
-
-                {/* Pilih Layanan */}
-                <div className="flex flex-col gap-y-2">
-                    <label className="text-blue-50 font-semibold text-sm flex items-center gap-2">
-                        <FaTshirt className="text-blue-400" />
-                        Jenis Layanan <span className="text-red-400">*</span>
-                    </label>
-                    <div className="relative">
-                        <select
-                            className="bg-white/5 border border-white/10 text-white text-sm rounded-2xl focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 block w-full p-4 appearance-none cursor-pointer transition-all duration-300 outline-none hover:bg-white/10 [&>option]:bg-slate-800"
-                            name="layanan"
-                            value={formData.layanan}
-                            onChange={handleChange}
-                        >
-                            <option value="" disabled>-- Pilih Jenis Layanan --</option>
-                            <option value="Cuci Setrika">Cuci & Setrika (Paling Populer)</option>
-                            <option value="Cuci Lipat">Cuci Lipat Aja</option>
-                            <option value="Setrika">Hanya Setrika</option>
-                        </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-5 text-white/40">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </div>
-                    </div>
-                </div>  
-
-                {/* Alamat */}
-                <div className="flex flex-col gap-y-2">
-                    <label className="text-blue-50 font-semibold text-sm flex items-center gap-2">
-                        <FaMapMarkerAlt className="text-blue-400" />
-                        Detail Alamat Pickup <span className="text-red-400">*</span>
-                    </label>
-                    <textarea
-                        className="bg-white/5 border border-white/10 text-white text-sm rounded-2xl focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 block w-full p-4 transition-all duration-300 placeholder:text-white/20 outline-none hover:bg-white/10"
-                        name="alamat"
-                        value={formData.alamat}
-                        onChange={handleChange}
-                        rows={3}
-                        placeholder="Contoh: Jl. Merdeka No 12, Kost Biru Kamar 5. Patokan deket Indomaret."
-                    ></textarea>
-                </div> 
-
-                {/* Info Text */}
-                {!isValid && (
-                    <div className="mt-1 text-sm text-blue-200/80 flex items-start gap-2 bg-blue-900/30 border border-blue-500/20 p-4 rounded-xl">
-                        <svg className="w-5 h-5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <span>Lengkapi form bertanda bintang (*) untuk melanjutkan order.</span>
-                    </div>
-                )}
-
-                {/* Button Submit */}
-                <button 
-                    onClick={submit} 
-                    disabled={!isValid}
-                    type="button" 
-                    className={`mt-2 flex items-center justify-center gap-x-3 py-4 w-full rounded-2xl font-bold text-lg transition-all duration-500 ease-out border overflow-hidden relative group
-                        ${isValid 
-                            ? 'bg-gradient-to-r from-green-500 to-emerald-600 border-green-400/50 text-white shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transform hover:-translate-y-1' 
-                            : 'bg-white/5 border-white/10 text-white/30 cursor-not-allowed shadow-none'
-                        }`}
-                >
-                    {/* Shine effect for active button */}
-                    {isValid && <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white/20 opacity-40 group-hover:animate-shine" />}
-
-                    <FaWhatsapp className={`text-2xl relative z-10 ${isValid && "animate-pulse"}`} />
-                    <span className="relative z-10">Kirim ke WhatsApp</span>
-                </button>
-            </div>
+        {/* Header */}
+        <div className="relative z-10 mb-6 border-b border-ink-900/10 pb-5">
+          <span className="eyebrow">
+            <LuSparkles className="text-brand-700" />
+            Formulir pickup cepat
+          </span>
+          <h2 className="mt-3 font-display text-2xl font-extrabold tracking-tight text-ink-900">
+            Jadwalkan penjemputan
+          </h2>
+          <p className="mt-1 text-xs leading-relaxed text-ink-500 sm:text-sm">
+            Isi data di bawah, kurir kami segera merespons dan menuju lokasimu.
+          </p>
         </div>
+
+        <form onSubmit={submit} className="relative z-10 flex flex-col gap-5">
+          {/* Nama */}
+          <div>
+            <label htmlFor="nama" className="field-label">
+              <LuUser className="text-sm text-brand-600" />
+              Nama lengkap <span className="text-coral-500">*</span>
+            </label>
+            <input
+              id="nama"
+              type="text"
+              name="nama"
+              placeholder="Contoh: Budi Santoso"
+              value={formData.nama}
+              onChange={handleChange}
+              required
+              className="field"
+            />
+          </div>
+
+          {/* Paket */}
+          <div>
+            <span className="field-label">
+              <LuClock className="text-sm text-brand-600" />
+              Pilihan kecepatan <span className="text-coral-500">*</span>
+            </span>
+            <div className="grid grid-cols-2 gap-2">
+              {paketOptions.map((opt) => {
+                const active = formData.paket === opt.value
+                return (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => setFormData({ ...formData, paket: opt.value })}
+                    className={`flex flex-col rounded-2xl border px-3 py-2.5 text-left transition-all ${
+                      active
+                        ? 'border-brand-600 bg-brand-50 shadow-sm ring-1 ring-brand-600/20'
+                        : 'border-ink-900/10 bg-cream-50 hover:border-ink-900/25'
+                    }`}
+                    aria-pressed={active}
+                  >
+                    <span className="flex items-center justify-between gap-1">
+                      <span className="text-xs font-extrabold text-ink-900">{opt.label}</span>
+                      {active && <LuCheck className="text-sm text-brand-700" />}
+                    </span>
+                    <span className="mt-0.5 text-[10px] font-semibold text-ink-400">
+                      {opt.hint}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Layanan */}
+          <div>
+            <label htmlFor="layanan" className="field-label">
+              <LuShirt className="text-sm text-brand-600" />
+              Jenis layanan <span className="text-coral-500">*</span>
+            </label>
+            <select
+              id="layanan"
+              name="layanan"
+              value={formData.layanan}
+              onChange={handleChange}
+              className="field cursor-pointer font-medium"
+            >
+              <option value="Cuci Setrika">Cuci + Setrika Wangi Rapi (Kiloan)</option>
+              <option value="Cuci Kering Lipat">Cuci Kering Lipat (Kiloan)</option>
+              <option value="Setrika Saja">Setrika Rapi Saja (Kiloan)</option>
+              <option value="Cuci Sepatu">Treatment Cuci Sepatu (Sneakers/Formal)</option>
+              <option value="Cuci Bed Cover / Selimut">Cuci Bed Cover / Selimut / Karpet</option>
+              <option value="Cucian Satuan (Jas/Gaun)">Cucian Satuan (Jas/Gaun/Pakaian Khusus)</option>
+            </select>
+          </div>
+
+          {/* Alamat */}
+          <div>
+            <label htmlFor="alamat" className="field-label">
+              <LuMapPin className="text-sm text-brand-600" />
+              Alamat lengkap &amp; patokan <span className="text-coral-500">*</span>
+            </label>
+            <textarea
+              id="alamat"
+              name="alamat"
+              rows={3}
+              placeholder="Contoh: Kost Griya Putri No. 12, Jl. Candi Gebang (sebelah minimarket, Sleman)"
+              value={formData.alamat}
+              onChange={handleChange}
+              required
+              className="field resize-none"
+            />
+          </div>
+
+          <button type="submit" disabled={!isValid} className="btn-wa w-full">
+            <FaWhatsapp className="text-xl" />
+            Kirim pesanan ke WhatsApp
+          </button>
+
+          <p className="flex items-start justify-center gap-1.5 text-center text-[11px] leading-tight text-ink-400">
+            <LuTruck className="mt-0.5 shrink-0 text-sm text-brand-600" />
+            Gratis antar-jemput untuk jarak maksimal 5 km dari outlet Condongcatur, Sleman.
+          </p>
+        </form>
+      </div>
     </div>
   )
 }

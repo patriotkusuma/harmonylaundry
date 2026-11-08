@@ -1,91 +1,103 @@
 import React from 'react'
 import FormPesan from './FormPesan'
-import { FaCheckCircle, FaStar, FaTruck, FaClock } from 'react-icons/fa'
+import { FaStar } from 'react-icons/fa'
+import { LuClock, LuShieldCheck, LuSparkles, LuTruck } from 'react-icons/lu'
 
 export const metadata = {
-  title: "Pesan Laundry Antar Jemput Jogja (Gratis 5 KM) | Harmony Laundry",
-  description: "Malas nyuci? Pesan layanan Harmony Laundry sekarang! Pakaian dijemput kotor, kembali bersih & wangi. Nikmati layanan gratis antar jemput s/d 5 km di wilayah Jogja dan sekitarnya.",
+  title: "Pesan Antar Jemput Laundry Jogja (Gratis 5 KM) | Harmony Laundry",
+  description: "Malas mencuci? Pesan layanan Harmony Laundry sekarang! Pakaian dijemput kotor, kembali bersih, wangi & rapi. Nikmati layanan gratis antar jemput s/d 5 km di wilayah Jogja dan sekitarnya.",
   keywords: [
-    "Laundry antar jemput Jogja", 
-    "Laundry Jogja gratis ongkir", 
-    "Pesan laundry online Jogja", 
-    "Laundry terdekat 5 km", 
-    "Harmony Laundry antar jemput", 
-    "Laundry express Jogja"
+    "Laundry antar jemput Jogja",
+    "Laundry Jogja gratis ongkir",
+    "Pesan laundry online Jogja",
+    "Laundry terdekat 5 km",
+    "Harmony Laundry antar jemput",
+    "Laundry express Jogja",
   ],
   alternates: {
     canonical: "https://harmonylaundrys.com/pesan",
   },
-};
+}
+
+const benefits = [
+  {
+    icon: LuTruck,
+    title: 'Gratis antar jemput (max 5 km)',
+    desc: 'Driver menjemput cucian langsung ke depan pintu kos, kontrakan, atau rumahmu.',
+    tone: 'bg-brand-100 text-brand-700',
+  },
+  {
+    icon: LuClock,
+    title: 'Pilihan express 1 hari jadi',
+    desc: 'Tersedia paket kilat saat pakaian dibutuhkan untuk acara penting atau kuliah besok.',
+    tone: 'bg-citrus-100 text-citrus-500',
+  },
+  {
+    icon: LuShieldCheck,
+    title: '100% higienis, 1 mesin 1 klien',
+    desc: 'Pakaianmu tidak pernah dicampur dengan cucian orang lain. Aman, wangi, anti tertukar.',
+    tone: 'bg-emerald-100 text-emerald-700',
+  },
+]
 
 function Pesan() {
   return (
-    <div className="w-full min-h-screen pt-28 pb-16 px-4 bg-slate-900 bg-gradient-to-br from-blue-900 via-blue-800 to-slate-900 flex items-center relative overflow-hidden">
-        {/* Animated Background Decorative Blobs */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/20 rounded-full blur-3xl mix-blend-screen animate-blob pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
-        <div className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-teal-500/10 rounded-full blur-3xl mix-blend-screen animate-blob animation-delay-2000 pointer-events-none -translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute bottom-0 left-1/2 w-[400px] h-[400px] bg-purple-500/20 rounded-full blur-3xl mix-blend-screen animate-blob animation-delay-4000 pointer-events-none translate-y-1/3 -translate-x-1/3"></div>
+    <div className="relative w-full overflow-hidden bg-cream-100 pb-20 pt-28 sm:pt-32">
+      <div className="pointer-events-none absolute inset-0 bg-dotgrid opacity-40 mask-fade-b" />
+      <div className="pointer-events-none absolute -left-24 top-24 h-80 w-80 rounded-full bg-brand-200/50 blur-3xl" />
+      <div className="pointer-events-none absolute -right-16 top-1/2 h-96 w-96 rounded-full bg-citrus-200/40 blur-3xl" />
 
-        {/* Floating Glass Bubbles */}
-        <div className="absolute top-[20%] left-[10%] w-32 h-32 rounded-full border border-white/10 bg-white/5 backdrop-blur-lg animate-blob pointer-events-none"></div>
-        <div className="absolute top-[60%] right-[15%] w-48 h-48 rounded-full border border-white/10 bg-white/5 backdrop-blur-md animate-blob animation-delay-4000 pointer-events-none"></div>
-        <div className="absolute bottom-[10%] left-[30%] w-24 h-24 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm animate-blob animation-delay-2000 pointer-events-none"></div>
-        <div className="absolute top-[10%] right-[40%] w-16 h-16 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl animate-bounce pointer-events-none" style={{animationDuration: '5s'}}></div>
-
-        <div className="max-w-screen-xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10 my-4">
-            
-            {/* Left Column: Trust Signals & Copywriting */}
-            <div className="flex flex-col gap-y-8 animate-fade-in-up md:px-6">
-              <div>
-                <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-blue-100 text-sm font-bold px-4 py-1.5 rounded-full mb-6">
-                  <span className="text-yellow-400 flex items-center gap-1"><FaStar className="inline" /> 4.9/5</span> dari 1.500+ Pelanggan
-                </div>
-                <h1 className="text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-4">
-                  Biar Kami Yang Urus <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-blue-300">Cucianmu!</span>
-                </h1>
-                <p className="text-lg text-blue-100/90 leading-relaxed max-w-lg font-light">
-                  Waktumu terlalu berharga untuk mencuci. Serahkan pada ahlinya—pakaian dijemput kotor, kembali dalam keadaan bersih, wangi, dan rapi siap pakai.
-                </p>
-              </div>
-
-              {/* Benefits Checklist */}
-              <div className="flex flex-col gap-y-5 mt-2">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl shadow-sm flex items-center justify-center text-blue-300 shrink-0 transform transition hover:scale-105 hover:bg-white/20">
-                    <FaTruck className="text-xl" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-white">Gratis Antar Jemput</h3>
-                    <p className="text-blue-200/80 text-sm mt-1">Maksimal jarak 5 km dari outlet kami. Pesan langsung dari rumah.</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl shadow-sm flex items-center justify-center text-green-400 shrink-0 transform transition hover:scale-105 hover:bg-white/20">
-                    <FaCheckCircle className="text-xl" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-white">Higienis & Anti Luntur</h3>
-                    <p className="text-blue-200/80 text-sm mt-1">1 Mesin 1 Pelanggan. Pakaian dicuci tanpa dicampur dengan order lain.</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl shadow-sm flex items-center justify-center text-orange-400 shrink-0 transform transition hover:scale-105 hover:bg-white/20">
-                    <FaClock className="text-xl" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-white">Tepat Waktu & Beragam</h3>
-                    <p className="text-blue-200/80 text-sm mt-1">Pilih dari layanan Kilat 4 Jam hingga Reguler, cuci kiloan sampai satuan.</p>
-                  </div>
-                </div>
-              </div>
+      <div className="container-page relative z-10 grid grid-cols-1 items-center gap-12 py-6 lg:grid-cols-12">
+        {/* Copy */}
+        <div className="flex flex-col gap-6 lg:col-span-6">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-ink-900/10 bg-white/80 px-3.5 py-1.5 text-xs font-bold text-ink-700 shadow-sm backdrop-blur">
+              <span className="flex items-center gap-1 text-citrus-500">
+                <FaStar className="text-xs" /> 4.9/5
+              </span>
+              <span className="text-ink-300">•</span>
+              <span>1.500+ pelanggan puas di Jogja</span>
             </div>
 
-            {/* Right Column: Order Form */}
-            <div className="w-full flex justify-center lg:justify-end animate-fade-in-up md:delay-100">
-                <FormPesan/>
-            </div>
+            <h1 className="mt-5 max-w-xl font-display text-[2.4rem] font-extrabold leading-[1.02] tracking-tight text-ink-900 text-balance sm:text-5xl lg:text-[3.4rem]">
+              Biar kami yang urus <span className="marker-highlight px-1">cucian kotormu.</span>
+            </h1>
 
+            <p className="mt-5 max-w-lg text-base leading-relaxed text-ink-500 text-pretty">
+              Waktumu terlalu berharga untuk mencuci dan menyetrika. Serahkan pada ahlinya—dijemput
+              di lokasi, kembali bersih, wangi, dan rapi siap pakai.
+            </p>
+          </div>
+
+          {/* Benefits */}
+          <div className="divide-y divide-ink-900/10 rounded-[1.5rem] border border-ink-900/10 bg-white/75 backdrop-blur">
+            {benefits.map((benefit) => {
+              const Icon = benefit.icon
+              return (
+                <div key={benefit.title} className="flex items-start gap-3.5 p-4 sm:p-5">
+                  <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-2xl ${benefit.tone}`}>
+                    <Icon className="text-xl" />
+                  </span>
+                  <div>
+                    <h3 className="text-sm font-extrabold text-ink-900">{benefit.title}</h3>
+                    <p className="mt-1 text-xs leading-relaxed text-ink-500">{benefit.desc}</p>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          <p className="flex items-start gap-2 text-xs leading-relaxed text-ink-500">
+            <LuSparkles className="mt-0.5 shrink-0 text-base text-brand-600" />
+            Garansi cuci ulang gratis jika cucian kurang bersih atau kurang rapi.
+          </p>
         </div>
+
+        {/* Form */}
+        <div className="flex justify-center lg:col-span-6">
+          <FormPesan />
+        </div>
+      </div>
     </div>
   )
 }

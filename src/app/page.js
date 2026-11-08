@@ -2,6 +2,7 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import Harga from "@/components/Harga";
 import Hero from "@/components/Hero";
+import LayananStrip from "@/components/LayananStrip";
 import WeAre from "@/components/WeAre";
 import Features from "@/components/Features";
 import HowItWorks from "@/components/HowItWorks";
@@ -56,6 +57,9 @@ export default function Home() {
     <main>
       {/* Hero - visual pertama yang dilihat pengunjung */}
       <Hero />
+
+      {/* Penegasan positioning: layanan laundry utama */}
+      <LayananStrip />
 
       {/* Statistik singkat - bangun kepercayaan */}
       <Stats />

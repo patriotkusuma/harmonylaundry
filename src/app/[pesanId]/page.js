@@ -1,6 +1,7 @@
 import FloatingQrisButton from "@/components/FloatingQrisButton";
 import BayarQris from "./BayarQris";
-import DetailPesan, { getStatusPembayaran } from "./DetailPesan";
+import DetailPesan from "./DetailPesan";
+import Custom404 from "./404";
 import getDetailPesan from "@/lib/pesanan";
 
 
@@ -23,55 +24,66 @@ export async function generateMetadata({ params }) {
 export default async function Pesanan({ params }) {
   const { pesanId } = params;
 
-  const statusPembayaran = await getStatusPembayaran(pesanId);
-
-  // ✅ ambil total tagihan dari API pesanan
   const orderRes = await getDetailPesan(pesanId);
-//   const total = orderRes?.data?.total_harga ?? 0;
-const needPayAmount = orderRes?.data?.paid - orderRes?.data?.total_harga;
-  const total = Number(needPayAmount ?? 0);
+  const orderData = orderRes?.data;
 
-  
+  // API mengembalikan { error: "pesanan tidak ditemukan" } tanpa field status/success.
+  const isNotFound =
+    !orderData || orderRes?.error || orderRes?.success === false || orderRes?.status === 404;
 
+  if (isNotFound) {
+    return <Custom404 statusCode={404} />;
+  }
+
+  const statusPembayaran = orderData?.status_pembayaran ?? null;
+  const needPayAmount =
+    Number(orderData?.paid ?? 0) - Number(orderData?.total_harga ?? 0);
 
   return (
-    <main className="min-h-screen bg-gray-50 pt-20 pb-10">
-      <div className="mx-auto max-w-6xl px-4">
-        {/* Header halaman */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Detail Pesanan</h1>
-          <p className="text-sm text-gray-600">
-            Cek rincian pesanan, status pembayaran, dan progress pengerjaan laundry kamu.
-          </p>
+    <main className="relative min-h-screen overflow-hidden bg-cream-100 pb-14 pt-28 sm:pt-32">
+      <div className="pointer-events-none absolute inset-0 bg-dotgrid opacity-30 mask-fade-b" />
+      <div className="pointer-events-none absolute -right-24 top-24 h-80 w-80 rounded-full bg-brand-100/60 blur-3xl" />
 
-          <div className="mt-2 text-xs text-gray-500">
-            Kode Pesanan: <span className="font-mono font-semibold">{pesanId}</span>
+      <div className="container-page relative z-10">
+        {/* Header */}
+        <div className="mb-8">
+          <span className="eyebrow">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            Status pesanan
+          </span>
+          <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h1 className="font-display text-3xl font-extrabold tracking-tight text-ink-900 sm:text-4xl">
+                Detail pesanan
+              </h1>
+              <p className="mt-1 max-w-xl text-sm leading-relaxed text-ink-500">
+                Cek rincian pesanan, status pembayaran, dan progress pengerjaan laundry kamu.
+              </p>
+            </div>
+            <div className="w-fit rounded-full border border-ink-900/10 bg-white px-3.5 py-2 text-xs text-ink-500">
+              Kode: <span className="font-mono font-bold text-ink-900">{pesanId}</span>
+            </div>
           </div>
         </div>
 
         {/* Content */}
-        <div className="flex gap-6 flex-col lg:flex-row items-start">
+        <div className="flex flex-col items-start gap-6 lg:flex-row">
           <DetailPesan pesanId={pesanId} />
 
-          {/* QRIS tampil hanya kalau belum lunas */}
           {statusPembayaran !== null && statusPembayaran !== "Lunas" && (
             <>
-                {/* Desktop/tablet: QRIS tampil di kanan */}
-                <div className="hidden md:block">
+              <div className="hidden md:block">
                 <BayarQris kodePesan={pesanId} total={needPayAmount} />
-                </div>
+              </div>
 
-                {/* Mobile: QRIS floating */}
-                <FloatingQrisButton>
+              <FloatingQrisButton>
                 <BayarQris kodePesan={pesanId} total={needPayAmount} compact />
-                </FloatingQrisButton>
+              </FloatingQrisButton>
             </>
-            )}
-
+          )}
         </div>
 
-        {/* Footer kecil */}
-        <div className="mt-8 text-center text-xs text-gray-500">
+        <div className="mt-10 text-center text-xs text-ink-400">
           © {new Date().getFullYear()} Harmony Laundry • Berani Kotor Itu Baik 😊
         </div>
       </div>

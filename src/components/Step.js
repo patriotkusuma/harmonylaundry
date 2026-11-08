@@ -1,47 +1,42 @@
 "use client";
 
 import React, { useState } from "react";
-import { FaChevronDown, FaChevronUp, FaClock } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { LuClock } from "react-icons/lu";
 import moment from "moment";
 import "moment/locale/id";
 
-/**
- * Step accordion for Order Timeline
- * - Compact on mobile
- * - Icon + color per step
- * - Log details shown only when expanded
- * - Machine/operator intentionally hidden (per request)
- */
 const Step = ({ step, idx, activeIdx, canceled }) => {
   const { title, desc, time, logs, icon, color } = step;
 
   const done = idx < activeIdx;
   const active = idx === activeIdx;
 
-  const [open, setOpen] = useState(active); // active step auto-open
+  const [open, setOpen] = useState(active);
 
-  // fallback colors if not provided
   const iconCls = canceled
     ? "bg-rose-50 border-rose-200 text-rose-600"
     : done
-    ? "bg-emerald-50 border-emerald-200 text-emerald-600"
-    : active
-    ? "bg-blue-50 border-blue-200 text-blue-700"
-    : "bg-white border-gray-200 text-gray-400";
+      ? "bg-emerald-50 border-emerald-200 text-emerald-600"
+      : active
+        ? "bg-brand-50 border-brand-200 text-brand-700"
+        : "bg-white border-ink-900/10 text-ink-300";
 
-  // if step defines its own style (recommended), use it
   const iconStyle = color || iconCls;
 
   return (
-    <div className="rounded-2xl border bg-white overflow-hidden">
+    <div
+      className={`overflow-hidden rounded-2xl border bg-white transition-colors ${
+        active ? "border-brand-600/40 ring-1 ring-brand-600/10" : "border-ink-900/10"
+      }`}
+    >
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="w-full p-4 flex items-start gap-3 text-left hover:bg-gray-50 transition"
+        className="flex w-full items-start gap-3 p-4 text-left transition-colors hover:bg-cream-50"
       >
-        {/* icon bubble */}
         <div
-          className={`h-10 w-10 rounded-2xl border flex items-center justify-center shrink-0 ${iconStyle}`}
+          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border text-sm ${iconStyle}`}
         >
           {icon ? icon : done ? "✓" : "•"}
         </div>
@@ -50,70 +45,66 @@ const Step = ({ step, idx, activeIdx, canceled }) => {
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
-                <div className="font-semibold text-gray-900">{title}</div>
+                <div className="text-sm font-extrabold text-ink-900">{title}</div>
 
                 {done && !canceled && (
-                  <span className="rounded-full bg-emerald-100 text-emerald-700 px-2 py-0.5 text-[11px] font-semibold">
+                  <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700">
                     Selesai
                   </span>
                 )}
                 {active && !canceled && (
-                  <span className="rounded-full bg-blue-100 text-blue-700 px-2 py-0.5 text-[11px] font-semibold">
+                  <span className="rounded-full bg-brand-100 px-2 py-0.5 text-[10px] font-bold text-brand-700">
                     Sedang diproses
+                  </span>
+                )}
+                {canceled && active && (
+                  <span className="rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-bold text-rose-700">
+                    Dibatalkan
                   </span>
                 )}
               </div>
 
               {time && (
-                <div className="mt-1 text-xs text-gray-500 flex items-center gap-2">
-                  <FaClock />
+                <div className="mt-1 flex items-center gap-1.5 text-[11px] font-medium text-ink-400">
+                  <LuClock className="text-xs" />
                   {moment(time).locale("id").format("ddd, DD MMM YYYY HH:mm")}
                 </div>
               )}
 
-              {/* desc only when open */}
               {open && (
-                <div className="mt-2 text-sm text-gray-600 leading-relaxed">
-                  {desc}
-                </div>
+                <div className="mt-2 text-xs leading-relaxed text-ink-600">{desc}</div>
               )}
 
-              {/* log count when closed */}
               {!open && (logs?.length || 0) > 0 && (
-                <div className="mt-2 text-xs text-gray-500">
+                <div className="mt-1.5 text-[11px] font-medium text-ink-400">
                   {logs.length} aktivitas tercatat
                 </div>
               )}
             </div>
 
-            <div className="text-gray-400 mt-1 shrink-0">
+            <div className="mt-0.5 shrink-0 text-ink-300">
               {open ? <FaChevronUp /> : <FaChevronDown />}
             </div>
           </div>
         </div>
       </button>
 
-      {/* expanded content: logs */}
       {open && (
-        <div className="border-t bg-gray-50 p-4">
+        <div className="border-t border-ink-900/10 bg-cream-50 p-4">
           {(logs?.length || 0) === 0 ? (
-            <div className="text-sm text-gray-600">Belum ada log proses untuk tahap ini.</div>
+            <div className="text-xs text-ink-500">Belum ada log proses untuk tahap ini.</div>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               {logs.map((l) => (
-                <div key={l.id} className="rounded-xl border bg-white p-3">
+                <div key={l.id} className="rounded-xl border border-ink-900/10 bg-white p-3">
                   <div className="flex items-start justify-between gap-3">
-                    <div className="text-sm font-semibold text-gray-900 capitalize">
-                      {l.proses}
-                    </div>
-                    <div className="text-xs text-gray-500">
+                    <div className="text-xs font-bold capitalize text-ink-900">{l.proses}</div>
+                    <div className="text-[11px] text-ink-400">
                       {moment(l.started_at).locale("id").format("DD MMM HH:mm")}
                     </div>
                   </div>
 
-                  <div className="mt-1 text-sm text-gray-600 leading-relaxed">
-                    {l.keterangan}
-                  </div>
+                  <div className="mt-1 text-xs leading-relaxed text-ink-600">{l.keterangan}</div>
                 </div>
               ))}
             </div>

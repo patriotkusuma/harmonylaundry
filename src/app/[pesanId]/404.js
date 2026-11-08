@@ -1,34 +1,37 @@
 import Link from "next/link";
-import { FaArrowLeft, FaReceipt } from "react-icons/fa";
+import { FaReceipt } from "react-icons/fa";
+import { LuArrowLeft, LuHome } from "react-icons/lu";
 
 export default function Custom404() {
   return (
-    <main className="min-h-[80vh] flex flex-col items-center justify-center w-full text-center px-4 bg-gray-50">
-        <div className="bg-white p-10 md:p-14 rounded-[3rem] shadow-xl border border-gray-100 max-w-lg w-full relative overflow-hidden">
-            {/* Background elements */}
-            <div className="absolute top-0 right-0 w-40 h-40 bg-blue-100 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2"></div>
-            
-            <div className="relative z-10 flex flex-col items-center">
-                <div className="w-24 h-24 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-4xl mb-6 shadow-sm">
-                    <FaReceipt />
-                </div>
-                
-                <h2 className="text-3xl font-extrabold text-gray-900 mb-3 tracking-tight">Data Tidak Ditemukan</h2>
-                <p className="text-gray-500 text-base leading-relaxed mb-8">
-                    Maaf, kode pesanan atau halaman yang Anda cari tidak ada dalam sistem kami. Coba periksa kembali kode Anda.
-                </p>
-                
-                <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
-                    <Link href="/pesan" className="inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-blue-50 text-blue-700 font-semibold rounded-2xl hover:bg-blue-100 hover:scale-105 transition-all duration-300">
-                        Cek Ulang Kode
-                    </Link>
-                    <Link href="/" className="inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-blue-600 text-white font-semibold rounded-2xl hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/30 hover:scale-105 transition-all duration-300">
-                        <FaArrowLeft />
-                        Beranda
-                    </Link>
-                </div>
-            </div>
+    <main className="relative flex min-h-[85vh] w-full flex-col items-center justify-center overflow-hidden bg-cream-100 px-4 py-24 text-center">
+      <div className="pointer-events-none absolute inset-0 bg-dotgrid opacity-40 mask-fade-b" />
+      <div className="pointer-events-none absolute -left-20 top-1/3 h-72 w-72 rounded-full bg-brand-100/60 blur-3xl" />
+
+      <div className="relative z-10 w-full max-w-lg rounded-[2rem] border border-ink-900/10 bg-white/85 p-8 shadow-card backdrop-blur sm:p-12">
+        <div className="mx-auto grid h-20 w-20 place-items-center rounded-2xl bg-coral-300/40 text-3xl text-coral-600">
+          <FaReceipt />
         </div>
+
+        <h2 className="mt-5 font-display text-2xl font-extrabold tracking-tight text-ink-900">
+          Data tidak ditemukan
+        </h2>
+        <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-ink-500">
+          Maaf, kode pesanan yang kamu cari tidak ada dalam sistem kami. Coba periksa kembali kode
+          pesananmu, ya.
+        </p>
+
+        <div className="mt-7 flex flex-col justify-center gap-2.5 sm:flex-row">
+          <Link href="/pesan" className="btn-light w-full sm:w-auto">
+            <LuArrowLeft className="text-base" />
+            Cek ulang kode
+          </Link>
+          <Link href="/" className="btn-dark w-full sm:w-auto">
+            <LuHome className="text-base" />
+            Beranda
+          </Link>
+        </div>
+      </div>
     </main>
   );
 }
