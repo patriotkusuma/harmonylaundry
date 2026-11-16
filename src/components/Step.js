@@ -6,7 +6,59 @@ import { LuClock } from "react-icons/lu";
 import moment from "moment";
 import "moment/locale/id";
 
-const Step = ({ step, idx, activeIdx, canceled }) => {
+// Menampilkan info antrian untuk tahap yang sedang aktif.
+// Hanya tahap aktif yang diberi info; tahap lain tidak dihitung sama sekali.
+const AntrianInfo = ({ antrian }) => {
+  if (!antrian) return null;
+
+  const { posisi, di_depan, total_di_tahap, menunggu_antar } = antrian;
+
+  // Tahap selesai + minta diantar: yang penting "menunggu pengantaran".
+  if (menunggu_antar) {
+    return (
+      <div className="mt-2 rounded-xl border border-brand-200 bg-brand-50 px-3 py-2.5">
+        <div className="flex items-center gap-2 text-xs font-bold text-brand-800">
+          <span>🚚</span> Menunggu pengantaran
+        </div>
+        <div className="mt-0.5 text-[11px] leading-relaxed text-brand-700">
+          Pesanan selesai dan akan diantar oleh kurir.
+        </div>
+      </div>
+    );
+  }
+
+  // Giliran sekarang.
+  if (di_depan === 0) {
+    return (
+      <div className="mt-2 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5">
+        <div className="text-xs font-bold text-emerald-800">
+          🎉 Sekarang giliranmu
+        </div>
+        <div className="mt-0.5 text-[11px] leading-relaxed text-emerald-700">
+          Pesananmu sedang ditangani pada tahap ini.
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-2 rounded-xl border border-ink-900/10 bg-cream-50 px-3 py-2.5">
+      <div className="flex items-baseline gap-1.5">
+        <span className="text-[11px] text-ink-500">Antrian ke-</span>
+        <span className="font-display text-base font-extrabold leading-none text-ink-900">
+          {posisi}
+        </span>
+        <span className="text-[11px] text-ink-500">dari {total_di_tahap}</span>
+      </div>
+      <div className="mt-0.5 text-[11px] leading-relaxed text-ink-500">
+        {di_depan} pesanan di depanmu. Biasanya lebih cepat kalau antrean
+        sedang lengang.
+      </div>
+    </div>
+  );
+};
+
+const Step = ({ step, idx, activeIdx, canceled, antrian }) => {
   const { title, desc, time, logs, icon, color } = step;
 
   const done = idx < activeIdx;
@@ -74,6 +126,9 @@ const Step = ({ step, idx, activeIdx, canceled }) => {
               {open && (
                 <div className="mt-2 text-xs leading-relaxed text-ink-600">{desc}</div>
               )}
+
+              {/* Info antrian hanya untuk tahap yang sedang aktif. */}
+              {active && !canceled && <AntrianInfo antrian={antrian} />}
 
               {!open && (logs?.length || 0) > 0 && (
                 <div className="mt-1.5 text-[11px] font-medium text-ink-400">

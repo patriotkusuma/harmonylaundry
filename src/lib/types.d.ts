@@ -1,34 +1,18 @@
 /**
- * Satu order yang sedang menunggu di suatu tahap.
+ * Posisi antrian satu pesanan pada tahap yang sedang berjalan.
+ *
+ * Sengaja hanya berisi angka — tidak ada daftar order lain, karena customer
+ * cukup tahu ada berapa order di depannya.
  */
-export interface AntrianItem {
-  order_id: number;
-  kode_pesan: string;
-  customer: string;
+export interface AntrianPosisi {
   tahap: "cuci" | "drying" | "setrika" | "selesai";
-  sejak: string;
-  menunggu_jam: number;
-  jumlah_rfid: number;
-  butuh_antar: boolean;
+  /** 1 = paling depan */
   posisi: number;
-}
-
-/**
- * Ringkasan satu tahap pengerjaan.
- */
-export interface RingkasanTahap {
-  tahap: AntrianItem["tahap"];
-  jumlah_order: number;
-  jumlah_rfid: number;
-  item: AntrianItem[];
-}
-
-/**
- * Data ringkasan antrian seluruh tahap.
- */
-export interface AntrianData {
-  dihitung_pada: string;
-  total_order: number;
-  tahap: RingkasanTahap[];
-  menunggu_antar: number;
+  /** jumlah order di tahap ini */
+  total_di_tahap: number;
+  /** order yang menunggu lebih dulu */
+  di_depan: number;
+  menunggu_jam: number;
+  /** khusus tahap selesai & pesanan minta diantar */
+  menunggu_antar: boolean;
 }

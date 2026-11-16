@@ -34,3 +34,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Knowledge graph (Graphify) - hasil generate, jangan di-commit
+graphify-out/
+
+# Log runtime - jangan di-commit
+app.log
+*.log
+.fuse_hidden*

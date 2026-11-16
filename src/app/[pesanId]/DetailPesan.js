@@ -14,6 +14,7 @@ import {
 import { LuClock, LuShieldCheck, LuSparkles } from "react-icons/lu";
 import Step from "@/components/Step";
 import getOrderLog from "@/lib/getOrderLog";
+import { getPosisiAntrian } from "@/lib/antrian";
 
 const normalizeProses = (p = "") => p.toLowerCase().trim();
 
@@ -167,6 +168,11 @@ async function DetailPesan(props) {
   const logRes = await getOrderLog(pesanId);
   const logs = logRes?.data ?? [];
   const { steps, activeIdx, canceled } = buildStepsFromOrderAndLogs(data, logs);
+
+  // Posisi antrian hanya untuk tahap yang sedang aktif. Kalau pesanan sudah
+  // selesai/diambil/batal, tidak ada antrian yang perlu ditampilkan.
+  const antrian =
+    canceled || activeIdx >= 4 ? null : await getPosisiAntrian(pesanId);
 
   return (
     <section className="w-full lg:flex-1">
@@ -351,6 +357,7 @@ async function DetailPesan(props) {
                     idx={idx}
                     activeIdx={activeIdx}
                     canceled={canceled}
+                    antrian={idx === activeIdx ? antrian : null}
                   />
                 ))}
               </div>
