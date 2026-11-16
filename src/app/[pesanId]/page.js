@@ -2,6 +2,7 @@ import FloatingQrisButton from "@/components/FloatingQrisButton";
 import BayarQris from "./BayarQris";
 import DetailPesan from "./DetailPesan";
 import Custom404 from "./404";
+import AntrianLinkBanner from "./AntrianLinkBanner";
 import getDetailPesan from "@/lib/pesanan";
 
 
@@ -65,6 +66,8 @@ export default async function Pesanan({ params }) {
             </div>
           </div>
         </div>
+
+        <AntrianLinkBanner />
 
         {/* Content */}
         <div className="flex flex-col items-start gap-6 lg:flex-row">
