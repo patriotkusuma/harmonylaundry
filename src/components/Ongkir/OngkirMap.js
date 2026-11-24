@@ -44,18 +44,52 @@ function destinationPinIcon() {
   });
 }
 
+/** Pin kandidat hasil pencarian: putih bergaris coral dengan nomor. */
+function candidatePinIcon(number) {
+  return L.divIcon({
+    className: "",
+    iconSize: [32, 40],
+    iconAnchor: [16, 38],
+    popupAnchor: [0, -34],
+    html: `
+      <div style="position:relative;width:32px;height:40px;filter:drop-shadow(0 5px 10px rgba(226,78,47,.28))">
+        <div style="position:absolute;left:50%;top:1px;width:28px;height:28px;border-radius:50% 50% 50% 0;transform:translateX(-50%) rotate(-45deg);background:#fff;border:2px solid #FF6B4A"></div>
+        <div style="position:absolute;left:50%;top:9px;transform:translateX(-50%);font-size:12px;font-weight:800;color:#E24E2F">${number}</div>
+      </div>`,
+  });
+}
+
+const escapeHtml = (value) =>
+  String(value ?? "").replace(
+    /[&<>"']/g,
+    (ch) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+        ch
+      ]
+  );
+
 /**
  * Peta pemilih lokasi. Leaflet dimuat hanya di browser (dynamic ssr:false)
  * supaya tidak menyentuh `window` saat render server.
  */
-export default function OngkirMap({ destination, route, summary, onPick }) {
+export default function OngkirMap({
+  destination,
+  route,
+  summary,
+  candidates,
+  onConfirm,
+  onPick,
+}) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const destMarkerRef = useRef(null);
   const routeGroupRef = useRef(null);
+  const candidateGroupRef = useRef(null);
   const onPickRef = useRef(onPick);
+  const onConfirmRef = useRef(onConfirm);
 
   onPickRef.current = onPick;
+  onConfirmRef.current = onConfirm;
 
   // Init peta sekali.
   useEffect(() => {
@@ -100,7 +134,15 @@ export default function OngkirMap({ destination, route, summary, onPick }) {
   // Marker tujuan.
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !destination) return;
+    if (!map) return;
+
+    if (!destination) {
+      if (destMarkerRef.current) {
+        map.removeLayer(destMarkerRef.current);
+        destMarkerRef.current = null;
+      }
+      return;
+    }
 
     if (!destMarkerRef.current) {
       destMarkerRef.current = L.marker([destination.lat, destination.lng], {
@@ -170,6 +212,67 @@ export default function OngkirMap({ destination, route, summary, onPick }) {
     });
   }, [route]);
 
+  // Pin kandidat hasil pencarian: semua titik tampil, dipilih dengan klik.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    if (candidateGroupRef.current) {
+      map.removeLayer(candidateGroupRef.current);
+      candidateGroupRef.current = null;
+    }
+
+    if (!candidates || candidates.length === 0) return;
+
+    const group = L.layerGroup();
+    const markers = [];
+
+    candidates.forEach((item, index) => {
+      const marker = L.marker([item.lat, item.lng], {
+        icon: candidatePinIcon(index + 1),
+        title: item.label || `Pilihan ${index + 1}`,
+      });
+
+      marker.bindPopup(
+        `<div style="min-width:180px;line-height:1.35">
+           <span style="font-size:10px;font-weight:800;color:#E24E2F">PILIHAN ${index + 1}</span>
+           <strong style="display:block;margin-top:2px;font-size:12px">${escapeHtml(
+             item.label || `${item.lat.toFixed(5)}, ${item.lng.toFixed(5)}`
+           )}</strong>
+           <button type="button" class="ongkir-pick" data-index="${index}" style="margin-top:9px;width:100%;border:0;border-radius:10px;background:#0E5AA4;color:#fff;font-weight:800;font-size:12px;padding:9px 10px;cursor:pointer">Pakai lokasi ini</button>
+         </div>`,
+        { closeButton: true, autoPan: true }
+      );
+
+      marker.on("popupopen", (event) => {
+        const button = event.popup
+          .getElement()
+          ?.querySelector(".ongkir-pick");
+        if (!button) return;
+
+        button.onclick = () => onConfirmRef.current?.(candidates[index]);
+      });
+
+      marker.addTo(group);
+      markers.push(marker);
+    });
+
+    group.addTo(map);
+    candidateGroupRef.current = group;
+
+    map.fitBounds(L.latLngBounds(candidates.map((c) => [c.lat, c.lng])), {
+      padding: [52, 52],
+      maxZoom: 15,
+    });
+
+    // Buka pin pertama supaya jelas kalau pin bisa dipilih.
+    const openFirst = setTimeout(() => markers[0]?.openPopup(), 420);
+
+    return () => {
+      clearTimeout(openFirst);
+    };
+  }, [candidates]);
+
   return (
     <>
       <style jsx global>{`
@@ -183,6 +286,12 @@ export default function OngkirMap({ destination, route, summary, onPick }) {
         }
         .leaflet-popup-content-wrapper {
           border-radius: 14px;
+        }
+        .leaflet-popup-content {
+          margin: 12px 14px;
+        }
+        .ongkir-pick:hover {
+          background: #0b4a87;
         }
         .leaflet-control-zoom a {
           color: #172f4b;

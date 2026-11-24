@@ -43,6 +43,7 @@ function CekOngkir() {
 
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const [candidates, setCandidates] = useState([]);
   const [searching, setSearching] = useState(false);
   const [searchError, setSearchError] = useState(null);
   const [geoBusy, setGeoBusy] = useState(false);
@@ -95,6 +96,7 @@ function CekOngkir() {
       label: label || prev?.label || null,
     }));
     setResults([]);
+    setCandidates([]);
     setSearchError(null);
   }, []);
 
@@ -109,6 +111,7 @@ function CekOngkir() {
     setSearching(true);
     setSearchError(null);
     setResults([]);
+    setCandidates([]);
 
     try {
       const res = await fetch(`/api/geocode?q=${encodeURIComponent(q)}`);
@@ -117,8 +120,14 @@ function CekOngkir() {
 
       if (!data.results?.length) {
         setSearchError("Alamat tidak ketemu. Coba kata kunci lain atau klik langsung di peta.");
+        setCandidates([]);
       } else {
         setResults(data.results);
+        setCandidates(data.results);
+        // Tampilkan pin pilihan dulu, harga dihitung setelah dikonfirmasi.
+        setDestination(null);
+        setInfo(null);
+        setRoute([]);
       }
     } catch (err) {
       setSearchError(err.message || "Gagal mencari alamat");
@@ -145,6 +154,7 @@ function CekOngkir() {
           label: "Lokasi saya",
         });
         setResults([]);
+        setCandidates([]);
       },
       () => {
         setGeoBusy(false);
@@ -228,6 +238,8 @@ function CekOngkir() {
               destination={destination}
               route={route}
               summary={ringkasanPeta}
+              candidates={candidates}
+              onConfirm={handlePick}
               onPick={handlePick}
             />
             <div className="flex flex-wrap items-center justify-between gap-2 border-t border-ink-900/5 px-4 py-3 text-xs text-ink-500 sm:px-5">
@@ -239,7 +251,11 @@ function CekOngkir() {
                 <span className="h-2.5 w-2.5 rounded-full bg-coral-500" />
                 Titik lokasi kamu
               </span>
-              <span className="hidden sm:inline">Klik peta atau geser pin merah</span>
+              <span className="hidden sm:inline">
+                {candidates.length > 0
+                  ? "Klik pin bernomor untuk pilih lokasi"
+                  : "Klik peta atau geser pin merah"}
+              </span>
             </div>
           </div>
 
@@ -294,29 +310,50 @@ function CekOngkir() {
             )}
 
             {results.length > 0 && (
-              <ul className="mt-3 max-h-52 space-y-1 overflow-y-auto rounded-xl border border-ink-900/10 bg-cream-50 p-1">
-                {results.map((item, index) => (
-                  <li key={`${item.lat}-${item.lng}-${index}`}>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        handlePick({ ...item, label: item.label });
-                        setQuery("");
-                        setSearchError(null);
-                      }}
-                      className="w-full rounded-lg px-3 py-2 text-left text-xs font-semibold leading-snug text-ink-700 transition hover:bg-white"
-                    >
-                      {item.label}
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <>
+                <p className="mt-3 flex items-start gap-1.5 text-[11px] font-semibold leading-snug text-ink-500">
+                  <LuMapPin className="mt-0.5 shrink-0 text-coral-500" />
+                  Ada {results.length} titik di peta. Klik pin bernomor, lalu
+                  tekan &ldquo;Pakai lokasi ini&rdquo;.
+                </p>
+                <ul className="mt-2 max-h-52 space-y-1 overflow-y-auto rounded-xl border border-ink-900/10 bg-cream-50 p-1">
+                  {results.map((item, index) => (
+                    <li key={`${item.lat}-${item.lng}-${index}`}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          handlePick({ ...item, label: item.label });
+                          setQuery("");
+                          setSearchError(null);
+                        }}
+                        className="flex w-full items-start gap-2 rounded-lg px-3 py-2 text-left text-xs font-semibold leading-snug text-ink-700 transition hover:bg-white"
+                      >
+                        <span className="mt-px grid h-5 w-5 shrink-0 place-items-center rounded-full border border-coral-400 bg-white text-[10px] font-extrabold text-coral-600">
+                          {index + 1}
+                        </span>
+                        <span className="min-w-0">{item.label}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </>
             )}
 
             <div className="my-5 h-px bg-ink-900/10" />
 
             {/* Hasil */}
-            {!destination ? (
+            {candidates.length > 0 ? (
+              <div className="rounded-2xl border border-coral-400/40 bg-coral-500/5 p-4 text-sm leading-relaxed text-ink-600">
+                <p className="font-bold text-ink-700">
+                  Pilih lokasi yang paling tepat.
+                </p>
+                <p className="mt-1">
+                  {candidates.length} pin bernomor sudah tampil di peta. Klik
+                  pin-nya, lalu tekan &ldquo;Pakai lokasi ini&rdquo;. Ongkir
+                  langsung dihitung.
+                </p>
+              </div>
+            ) : !destination ? (
               <div className="rounded-2xl bg-cream-100 p-4 text-sm leading-relaxed text-ink-500">
                 <p className="font-bold text-ink-700">Belum ada titik lokasi.</p>
                 <p className="mt-1">
@@ -422,6 +459,7 @@ function CekOngkir() {
                       setInfo(null);
                       setRoute([]);
                       setError(null);
+                      setCandidates([]);
                     }}
                     className="inline-flex items-center justify-center gap-1.5 rounded-full border border-ink-900/15 px-4 py-3 text-xs font-bold text-ink-600 transition hover:border-coral-500 hover:text-coral-600"
                   >
