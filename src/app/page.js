@@ -2,6 +2,7 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import Harga from "@/components/Harga";
 import CekOngkir from "@/components/CekOngkir";
+import GameSection from "@/components/Game/GameSection";
 import Hero from "@/components/Hero";
 import LayananStrip from "@/components/LayananStrip";
 import WeAre from "@/components/WeAre";
@@ -82,6 +83,9 @@ export default function Home() {
 
       {/* Testimoni pelanggan */}
       <Testimonials />
+
+      {/* Mini game arcade - nambah betah & jadi hook ke pesanan */}
+      <GameSection />
 
       {/* Kontak / CTA akhir */}
       <Contact />
