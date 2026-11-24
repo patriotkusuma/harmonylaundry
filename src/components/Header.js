@@ -8,9 +8,9 @@ import { LuArrowUpRight, LuClock, LuPackageSearch } from "react-icons/lu";
 
 const navItems = [
   { name: "Beranda", href: "/" },
+  { name: "Cek Ongkir", href: "/#cek-ongkir" },
   { name: "Layanan & Harga", href: "/layanan" },
   { name: "Cara Kerja", href: "/#cara-kerja" },
-  { name: "Cek Ongkir", href: "/#cek-ongkir" },
   { name: "Booking", href: "/pesan" },
   { name: "Blog", href: "/blog" },
 ];

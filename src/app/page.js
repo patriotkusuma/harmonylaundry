@@ -62,6 +62,9 @@ export default function Home() {
       {/* Penegasan positioning: layanan laundry utama */}
       <LayananStrip />
 
+      {/* Hook: cek ongkir berbasis peta, sengaja di atas biar langsung kelihatan */}
+      <CekOngkir />
+
       {/* Statistik singkat - bangun kepercayaan */}
       <Stats />
 
@@ -76,9 +79,6 @@ export default function Home() {
 
       {/* Daftar harga */}
       <Harga />
-
-      {/* Cek ongkir berbasis peta */}
-      <CekOngkir />
 
       {/* Testimoni pelanggan */}
       <Testimonials />

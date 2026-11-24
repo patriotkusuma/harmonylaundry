@@ -12,6 +12,23 @@ const outletPopup = `
   </div>
 `;
 
+/** Pin outlet: papan putih berlogo Harmony + ekor pin. */
+function outletPinIcon() {
+  return L.divIcon({
+    className: "",
+    iconSize: [72, 64],
+    iconAnchor: [36, 62],
+    popupAnchor: [0, -56],
+    html: `
+      <div style="position:relative;width:72px;height:64px;filter:drop-shadow(0 7px 12px rgba(7,22,38,.3))">
+        <div style="position:absolute;left:50%;top:48px;transform:translateX(-50%) rotate(45deg);width:13px;height:13px;background:#fff;border-right:2px solid #0E5AA4;border-bottom:2px solid #0E5AA4;border-bottom-right-radius:3px"></div>
+        <div style="position:absolute;left:0;top:0;width:72px;height:50px;box-sizing:border-box;border-radius:13px;background:#fff;border:2px solid #0E5AA4;display:flex;align-items:center;justify-content:center;overflow:hidden">
+          <img src="/img/logo-pin.png" alt="Harmony Laundry" style="width:62px;height:42px;object-fit:contain" />
+        </div>
+      </div>`,
+  });
+}
+
 function pinIcon(background, label) {
   return L.divIcon({
     className: "",
@@ -55,7 +72,7 @@ export default function OngkirMap({ destination, route, onPick }) {
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
 
-    L.marker([OUTLET.lat, OUTLET.lng], { icon: pinIcon("#0E5AA4", "H") })
+    L.marker([OUTLET.lat, OUTLET.lng], { icon: outletPinIcon() })
       .addTo(map)
       .bindPopup(outletPopup);
 

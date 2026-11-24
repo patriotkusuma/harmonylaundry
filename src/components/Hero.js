@@ -54,10 +54,14 @@ function Hero() {
               <span className="inline-flex h-2 w-2 rounded-full bg-brand-500" />
               <span className="text-ink-900">Laundry kiloan &amp; satuan</span>
               <span className="hidden text-ink-300 sm:inline">•</span>
-              <span className="inline-flex items-center gap-1 text-brand-700">
+              <a
+                href="#cek-ongkir"
+                className="group inline-flex items-center gap-1 text-brand-700 transition-colors hover:text-brand-800"
+              >
                 <LuTruck className="text-sm" />
                 Gratis antar-jemput 5 km
-              </span>
+                <LuArrowRight className="text-xs transition-transform group-hover:translate-x-0.5" />
+              </a>
             </div>
 
             <h1 className="max-w-3xl font-display text-[2.6rem] font-extrabold leading-[0.98] tracking-tight text-ink-900 text-balance sm:text-6xl lg:text-[3.8rem] xl:text-[4rem]">

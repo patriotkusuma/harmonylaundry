@@ -176,17 +176,25 @@ function CekOngkir() {
   }, [rincian, destination]);
 
   return (
-    <section id="cek-ongkir" className="relative overflow-hidden bg-cream-50 py-20 sm:py-28">
+    <section
+      id="cek-ongkir"
+      className="relative overflow-hidden bg-ink-900 py-20 sm:py-28"
+    >
+      <div className="pointer-events-none absolute inset-0 bg-linegrid opacity-[0.06]" />
+      <div className="pointer-events-none absolute -right-20 -top-24 h-80 w-80 rounded-full bg-brand-500/25 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-28 -left-16 h-72 w-72 rounded-full bg-citrus-400/15 blur-3xl" />
+
       <div className="container-page relative z-10">
         <div className="mx-auto mb-12 max-w-2xl text-center">
-          <span className="eyebrow">
-            <span className="h-1.5 w-1.5 rounded-full bg-brand-600" />
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-cream-50/80 backdrop-blur">
+            <span className="h-1.5 w-1.5 rounded-full bg-citrus-400" />
             Cek ongkir
           </span>
-          <h2 className="mt-5 font-display text-3xl font-extrabold leading-[1.05] tracking-tight text-ink-900 text-balance sm:text-4xl lg:text-5xl">
-            Antar jemput <span className="text-brand-700">gratis 5 km pertama.</span>
+          <h2 className="mt-5 font-display text-3xl font-extrabold leading-[1.05] tracking-tight text-cream-50 text-balance sm:text-4xl lg:text-5xl">
+            Antar jemput{" "}
+            <span className="text-brand-300">gratis 5 km pertama.</span>
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-ink-500">
+          <p className="mt-4 text-base leading-relaxed text-ink-300">
             Tandai lokasi rumahmu di peta. Jarak dihitung mengikuti rute jalan
             (OpenStreetMap), bukan garis lurus.
           </p>
