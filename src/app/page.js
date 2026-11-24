@@ -1,6 +1,7 @@
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import Harga from "@/components/Harga";
+import CekOngkir from "@/components/CekOngkir";
 import Hero from "@/components/Hero";
 import LayananStrip from "@/components/LayananStrip";
 import WeAre from "@/components/WeAre";
@@ -75,6 +76,9 @@ export default function Home() {
 
       {/* Daftar harga */}
       <Harga />
+
+      {/* Cek ongkir berbasis peta */}
+      <CekOngkir />
 
       {/* Testimoni pelanggan */}
       <Testimonials />
