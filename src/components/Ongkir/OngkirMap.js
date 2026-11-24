@@ -29,16 +29,17 @@ function outletPinIcon() {
   });
 }
 
-function pinIcon(background, label) {
+/** Pin tujuan: pin coral dengan titik putih di tengah. */
+function destinationPinIcon() {
   return L.divIcon({
     className: "",
-    iconSize: [34, 44],
-    iconAnchor: [17, 42],
-    popupAnchor: [0, -36],
+    iconSize: [38, 48],
+    iconAnchor: [19, 46],
+    popupAnchor: [0, -40],
     html: `
-      <div style="position:relative;width:34px;height:44px">
-        <div style="position:absolute;left:50%;top:0;transform:translateX(-50%);width:30px;height:30px;border-radius:50% 50% 50% 0;transform:translateX(-50%) rotate(-45deg);background:${background};border:2px solid #fff;box-shadow:0 6px 14px rgba(7,22,38,.28)"></div>
-        <div style="position:absolute;left:50%;top:6px;transform:translateX(-50%);font-size:11px;font-weight:800;color:#fff">${label}</div>
+      <div style="position:relative;width:38px;height:48px;filter:drop-shadow(0 6px 10px rgba(226,78,47,.35))">
+        <div style="position:absolute;left:50%;top:2px;width:34px;height:34px;border-radius:50% 50% 50% 0;transform:translateX(-50%) rotate(-45deg);background:#FF6B4A;border:2px solid #fff"></div>
+        <div style="position:absolute;left:50%;top:14px;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;background:#fff"></div>
       </div>`,
   });
 }
@@ -47,11 +48,11 @@ function pinIcon(background, label) {
  * Peta pemilih lokasi. Leaflet dimuat hanya di browser (dynamic ssr:false)
  * supaya tidak menyentuh `window` saat render server.
  */
-export default function OngkirMap({ destination, route, onPick }) {
+export default function OngkirMap({ destination, route, summary, onPick }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const destMarkerRef = useRef(null);
-  const routeLineRef = useRef(null);
+  const routeGroupRef = useRef(null);
   const onPickRef = useRef(onPick);
 
   onPickRef.current = onPick;
@@ -103,7 +104,7 @@ export default function OngkirMap({ destination, route, onPick }) {
 
     if (!destMarkerRef.current) {
       destMarkerRef.current = L.marker([destination.lat, destination.lng], {
-        icon: pinIcon("#FF6B4A", "T"),
+        icon: destinationPinIcon(),
         draggable: true,
       }).addTo(map);
 
@@ -118,28 +119,53 @@ export default function OngkirMap({ destination, route, onPick }) {
     map.panTo([destination.lat, destination.lng], { animate: true });
   }, [destination]);
 
-  // Garis rute.
+  // Garis rute: casing putih + garis biru + titik berjalan.
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
 
-    if (routeLineRef.current) {
-      map.removeLayer(routeLineRef.current);
-      routeLineRef.current = null;
+    if (routeGroupRef.current) {
+      map.removeLayer(routeGroupRef.current);
+      routeGroupRef.current = null;
     }
 
     if (!route || route.length < 2) return;
 
     const latLngs = route.map(([lng, lat]) => [lat, lng]);
-    routeLineRef.current = L.polyline(latLngs, {
-      color: "#0E5AA4",
-      weight: 5,
-      opacity: 0.85,
-      lineCap: "round",
-    }).addTo(map);
+    const group = L.layerGroup();
 
-    map.fitBounds(routeLineRef.current.getBounds(), {
-      padding: [36, 36],
+    L.polyline(latLngs, {
+      color: "#FFFFFF",
+      weight: 13,
+      opacity: 0.92,
+      lineCap: "round",
+      lineJoin: "round",
+      interactive: false,
+    }).addTo(group);
+
+    const main = L.polyline(latLngs, {
+      color: "#0E5AA4",
+      weight: 6.5,
+      opacity: 1,
+      lineCap: "round",
+      lineJoin: "round",
+      interactive: false,
+    }).addTo(group);
+
+    L.polyline(latLngs, {
+      color: "#BEE2FA",
+      weight: 2.8,
+      opacity: 0.95,
+      lineCap: "round",
+      className: "ongkir-route-flow",
+      interactive: false,
+    }).addTo(group);
+
+    group.addTo(map);
+    routeGroupRef.current = group;
+
+    map.fitBounds(main.getBounds(), {
+      padding: [42, 42],
       maxZoom: 16,
     });
   }, [route]);
@@ -151,15 +177,60 @@ export default function OngkirMap({ destination, route, onPick }) {
           font-family: inherit;
           background: #e7f1fa;
         }
+        /* Peta dibikin lebih kalem biar garis rute yang menonjol. */
+        .leaflet-tile-pane {
+          filter: saturate(0.72) contrast(0.96) brightness(1.04);
+        }
         .leaflet-popup-content-wrapper {
           border-radius: 14px;
         }
+        .leaflet-control-zoom a {
+          color: #172f4b;
+        }
+        .ongkir-route-flow {
+          stroke-dasharray: 0.1 15;
+          animation: ongkir-route-flow 1.05s linear infinite;
+        }
+        @keyframes ongkir-route-flow {
+          from {
+            stroke-dashoffset: 0;
+          }
+          to {
+            stroke-dashoffset: -15.1;
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .ongkir-route-flow {
+            animation: none;
+            stroke-dasharray: none;
+            opacity: 0;
+          }
+        }
       `}</style>
-      <div
-        ref={containerRef}
-        className="h-[300px] w-full sm:h-[420px]"
-        aria-label="Peta pemilih lokasi antar jemput"
-      />
+
+      <div className="relative">
+        <div
+          ref={containerRef}
+          className="h-[300px] w-full sm:h-[420px]"
+          aria-label="Peta pemilih lokasi antar jemput"
+        />
+
+        {summary && (
+          <div className="pointer-events-none absolute right-3 top-3 z-[650] flex items-center gap-2 rounded-full bg-white/95 px-3.5 py-2 text-xs font-extrabold text-ink-800 shadow-[0_8px_24px_-12px_rgba(7,22,38,0.5)] ring-1 ring-ink-900/10 backdrop-blur">
+            <span className="h-2 w-2 rounded-full bg-brand-600" />
+            <span>
+              {summary.distanceKm}{" "}
+              <span className="font-bold text-ink-500">km</span>
+            </span>
+            {summary.duration && (
+              <>
+                <span className="text-ink-300">•</span>
+                <span className="font-bold text-ink-500">{summary.duration}</span>
+              </>
+            )}
+          </div>
+        )}
+      </div>
     </>
   );
 }

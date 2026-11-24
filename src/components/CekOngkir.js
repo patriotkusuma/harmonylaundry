@@ -159,6 +159,27 @@ function CekOngkir() {
     [info]
   );
 
+  // Estimasi waktu tempuh dari OSRM (detik) jadi teks yang enak dibaca.
+  const durasi = useMemo(() => {
+    if (!info?.duration_s) return null;
+
+    const menit = Math.round(info.duration_s / 60);
+    if (menit < 1) return "< 1 mnt";
+    if (menit < 60) return `${menit} mnt`;
+
+    const jam = Math.floor(menit / 60);
+    const sisa = menit % 60;
+    return sisa ? `${jam} j ${sisa} mnt` : `${jam} j`;
+  }, [info]);
+
+  const ringkasanPeta = useMemo(
+    () =>
+      rincian
+        ? { distanceKm: formatKm(rincian.distanceKm), duration: durasi }
+        : null,
+    [rincian, durasi]
+  );
+
   const pesanWa = useMemo(() => {
     if (!rincian) return "Halo Harmony Laundry! Saya mau tanya ongkir antar jemput.";
 
@@ -203,7 +224,12 @@ function CekOngkir() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:gap-8">
           {/* Peta */}
           <div className="overflow-hidden rounded-[2rem] border border-ink-900/10 bg-white shadow-[0_24px_60px_-30px_rgba(7,22,38,0.45)] lg:col-span-3">
-            <OngkirMap destination={destination} route={route} onPick={handlePick} />
+            <OngkirMap
+              destination={destination}
+              route={route}
+              summary={ringkasanPeta}
+              onPick={handlePick}
+            />
             <div className="flex flex-wrap items-center justify-between gap-2 border-t border-ink-900/5 px-4 py-3 text-xs text-ink-500 sm:px-5">
               <span className="inline-flex items-center gap-1.5">
                 <span className="h-2.5 w-2.5 rounded-full bg-brand-700" />
@@ -318,6 +344,11 @@ function CekOngkir() {
                       {formatKm(rincian.distanceKm)}{" "}
                       <span className="text-base font-bold text-ink-500">km</span>
                     </p>
+                    {durasi && (
+                      <p className="mt-1 text-[11px] font-bold text-ink-400">
+                        ± {durasi} perjalanan dari outlet
+                      </p>
+                    )}
                   </div>
                   <span
                     className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-extrabold ${
